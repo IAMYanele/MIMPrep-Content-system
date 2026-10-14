@@ -1,0 +1,8 @@
+Image 1 is a real photo (an Instagram carousel slide, 3:4). Image 2 is the exact text layout for this slide, white text on a plain grey background, at exactly the same size as Image 1.
+
+Put the text from Image 2 onto Image 1:
+- EXACTLY the same words, spelling, punctuation, capitalisation and line breaks as Image 2. Copy every character; do not rephrase, shorten, add or drop anything.
+- EXACTLY the same position, size, centring and line spacing as Image 2 (Image 2 is a 1:1 overlay map of where each line goes).
+- EXACTLY the same typeface and weights as Image 2: Neue Haas Grotesk (Helvetica-style grotesk) - bold with tight letter spacing for the big lines, regular weight for the small lines. No other fonts.
+- Solid clean white text with a very soft, subtle dark shadow, like a polished Instagram carousel. No outlines, no gradients, no glow, no other colours.
+- The text is the top layer: it always sits in front of everything in the photo. Never hide letters behind people or objects.

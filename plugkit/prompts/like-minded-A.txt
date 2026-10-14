@@ -1,0 +1,12 @@
+REFERENCE IMAGES:
+- Image 1 and Image 2 are the SAME real man (long dark hair, black t-shirt). He is the subject. Keep his face, hair and build exactly recognisable — this must clearly be him, photorealistic, not a lookalike.
+- Image 3 is a screenshot of three existing Instagram reel covers. Match their STYLE exactly (not their content or text): photorealistic cinematic photo, warm low-key interior lighting, shallow depth of field, rich but natural colour, subtle film look; headline in a tall condensed sans-serif (like Bebas Neue / Anton), ALL CAPS, filled with a white-to-silver metallic vertical gradient, with a soft dark drop shadow; stacked lines where the small line sits on top and the key words are much bigger underneath, tightly leaded, centred.
+
+FORMAT: vertical 9:16 Instagram reel cover. Keep his face and ALL text inside the central 3:4 area (nothing important in the top or bottom 12%). No logos, no watermarks, no extra text, no UI, no captions, no emojis. Spell the headline EXACTLY as given, nothing else written anywhere.
+
+SCENE: A warm, busy café / coworking table in the evening. He sits front and centre, looking straight into the camera with a calm, confident, slightly serious expression, forearms on the table. Around and behind him, softly out of focus, 3–4 young ambitious people of mixed backgrounds talking, laughing, laptops and coffee on the table — the feeling of being surrounded by driven, like-minded people. Warm practical lights, bokeh.
+
+HEADLINE (top of the frame, above his head, three stacked lines, sizes increasing like "LONDON'S BEST / FIRST DATE / SPOTS" in Image 3):
+line 1 (smallest): HOW TO FIND
+line 2 (big): LIKE-MINDED
+line 3 (biggest): PEOPLE

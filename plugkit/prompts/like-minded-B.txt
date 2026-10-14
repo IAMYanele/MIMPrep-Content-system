@@ -1,0 +1,11 @@
+REFERENCE IMAGES:
+- Image 1 and Image 2 are the SAME real man (long dark hair, black t-shirt). He is the subject. Keep his face, hair and build exactly recognisable — this must clearly be him, photorealistic, not a lookalike.
+- Image 3 is a screenshot of three existing Instagram reel covers. Match their STYLE exactly (not their content or text): photorealistic cinematic photo, warm low-key interior lighting, shallow depth of field, rich but natural colour, subtle film look; headline in a tall condensed sans-serif (like Bebas Neue / Anton), ALL CAPS, filled with a white-to-silver metallic vertical gradient, with a soft dark drop shadow; stacked lines where the small line sits on top and the key words are much bigger underneath, tightly leaded, centred.
+
+FORMAT: vertical 9:16 Instagram reel cover. Keep his face and ALL text inside the central 3:4 area (nothing important in the top or bottom 12%). No logos, no watermarks, no extra text, no UI, no captions, no emojis. Spell the headline EXACTLY as given, nothing else written anywhere.
+
+SCENE: Podcast set, dark moody warm room with a practical lamp glowing behind him, like the left cover of Image 3. Medium close-up: he sits at a wooden table with a podcast microphone at the edge of frame, looking straight into the camera, serious and composed, black t-shirt, wristwatch visible.
+
+HEADLINE (lower third, over his chest, two stacked lines, like "RANKING TOP / US UNIVERSITIES" in Image 3, with a thin white underline beneath the second line):
+line 1 (smaller, white): BE AROUND
+line 2 (big, white-to-silver gradient): LIKE-MINDED PEOPLE

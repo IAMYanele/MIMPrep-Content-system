@@ -1,0 +1,1072 @@
+{
+  "fps": 30,
+  "durationInFrames": 1337,
+  "items": [
+    {
+      "text": "Sports injury that taught me a lesson",
+      "score": 1,
+      "ideaAt": 2.363396,
+      "scoreAt": 4.579167,
+      "endAt": 5.244167
+    },
+    {
+      "text": "I want to work in finance",
+      "score": 2,
+      "ideaAt": 5.465145,
+      "scoreAt": 6.833521,
+      "endAt": 7.580208
+    },
+    {
+      "text": "Mission trip where I helped others",
+      "score": 1,
+      "ideaAt": 7.827167,
+      "scoreAt": 9.909875,
+      "endAt": 10.622437
+    },
+    {
+      "text": "Why that work interests me",
+      "score": 6,
+      "ideaAt": 10.854208,
+      "scoreAt": 12.700333,
+      "endAt": 13.432146
+    },
+    {
+      "text": "I want a prestigious employer",
+      "score": 1,
+      "ideaAt": 13.653855,
+      "scoreAt": 16.065188,
+      "endAt": 16.848437
+    },
+    {
+      "text": "I want to be successful",
+      "score": 0,
+      "ideaAt": 17.092042,
+      "scoreAt": 18.489333,
+      "endAt": 19.348396
+    },
+    {
+      "text": "What I learned shadowing an analyst",
+      "score": 6,
+      "ideaAt": 19.60073,
+      "scoreAt": 21.69948,
+      "endAt": 22.423292
+    },
+    {
+      "text": "I want to become a leader",
+      "score": 2,
+      "ideaAt": 22.66723,
+      "scoreAt": 24.059313,
+      "endAt": 24.714188
+    },
+    {
+      "text": "Helping companies make acquisitions",
+      "score": 5,
+      "ideaAt": 24.963833,
+      "scoreAt": 27.021958,
+      "endAt": 27.901895
+    },
+    {
+      "text": "Consulting sounds interesting",
+      "score": 2,
+      "ideaAt": 28.118312,
+      "scoreAt": 29.801771,
+      "endAt": 30.61477
+    },
+    {
+      "text": "A project that tested my interest",
+      "score": 7,
+      "ideaAt": 30.866708,
+      "scoreAt": 33.027563,
+      "endAt": 33.889188
+    },
+    {
+      "text": "I want an international career",
+      "score": 2,
+      "ideaAt": 34.126458,
+      "scoreAt": 36.258333,
+      "endAt": 36.954646
+    },
+    {
+      "text": "I want to make an impact",
+      "score": 2,
+      "ideaAt": 37.196896,
+      "scoreAt": 38.494063,
+      "endAt": 39.152562
+    },
+    {
+      "text": "A conversation that changed my target role",
+      "score": 7,
+      "ideaAt": 39.388458,
+      "scoreAt": 41.9155,
+      "endAt": 42.703188
+    }
+  ],
+  "captions": [
+    {
+      "text": "Rating",
+      "startMs": 107,
+      "endMs": 423,
+      "timestampMs": null,
+      "confidence": 0.8
+    },
+    {
+      "text": " your",
+      "startMs": 423,
+      "endMs": 778,
+      "timestampMs": null,
+      "confidence": 0.8
+    },
+    {
+      "text": " college",
+      "startMs": 778,
+      "endMs": 1218,
+      "timestampMs": null,
+      "confidence": 0.8
+    },
+    {
+      "text": " essay",
+      "startMs": 1218,
+      "endMs": 1703,
+      "timestampMs": null,
+      "confidence": 0.8
+    },
+    {
+      "text": " ideas.",
+      "startMs": 1703,
+      "endMs": 2119,
+      "timestampMs": null,
+      "confidence": 0.8
+    },
+    {
+      "text": " Sports",
+      "startMs": 2363,
+      "endMs": 2738,
+      "timestampMs": null,
+      "confidence": 0.9576
+    },
+    {
+      "text": " injury",
+      "startMs": 2738,
+      "endMs": 3098,
+      "timestampMs": null,
+      "confidence": 0.2033
+    },
+    {
+      "text": " that",
+      "startMs": 3098,
+      "endMs": 3373,
+      "timestampMs": null,
+      "confidence": 0.6645
+    },
+    {
+      "text": " taught",
+      "startMs": 3373,
+      "endMs": 3573,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " me",
+      "startMs": 3573,
+      "endMs": 3743,
+      "timestampMs": null,
+      "confidence": 0.9972
+    },
+    {
+      "text": " one",
+      "startMs": 3743,
+      "endMs": 3953,
+      "timestampMs": null,
+      "confidence": 0.9395
+    },
+    {
+      "text": " lesson.",
+      "startMs": 3953,
+      "endMs": 4320,
+      "timestampMs": null,
+      "confidence": 0.9986
+    },
+    {
+      "text": " One",
+      "startMs": 4579,
+      "endMs": 4757,
+      "timestampMs": null,
+      "confidence": 0.8537
+    },
+    {
+      "text": " out",
+      "startMs": 4757,
+      "endMs": 4877,
+      "timestampMs": null,
+      "confidence": 0.994
+    },
+    {
+      "text": " of",
+      "startMs": 4877,
+      "endMs": 5027,
+      "timestampMs": null,
+      "confidence": 0.9964
+    },
+    {
+      "text": " ten.",
+      "startMs": 5027,
+      "endMs": 5245,
+      "timestampMs": null,
+      "confidence": 0.9042
+    },
+    {
+      "text": " I",
+      "startMs": 5465,
+      "endMs": 5633,
+      "timestampMs": null,
+      "confidence": 0.9842
+    },
+    {
+      "text": " want",
+      "startMs": 5633,
+      "endMs": 5803,
+      "timestampMs": null,
+      "confidence": 0.9958
+    },
+    {
+      "text": " to",
+      "startMs": 5803,
+      "endMs": 5953,
+      "timestampMs": null,
+      "confidence": 0.9329
+    },
+    {
+      "text": " work",
+      "startMs": 5953,
+      "endMs": 6083,
+      "timestampMs": null,
+      "confidence": 0.9984
+    },
+    {
+      "text": " in",
+      "startMs": 6083,
+      "endMs": 6283,
+      "timestampMs": null,
+      "confidence": 0.9986
+    },
+    {
+      "text": " finance.",
+      "startMs": 6283,
+      "endMs": 6595,
+      "timestampMs": null,
+      "confidence": 0.9716
+    },
+    {
+      "text": " Two",
+      "startMs": 6833,
+      "endMs": 7003,
+      "timestampMs": null,
+      "confidence": 0.9845
+    },
+    {
+      "text": " out",
+      "startMs": 7003,
+      "endMs": 7133,
+      "timestampMs": null,
+      "confidence": 0.9993
+    },
+    {
+      "text": " of",
+      "startMs": 7133,
+      "endMs": 7283,
+      "timestampMs": null,
+      "confidence": 0.9989
+    },
+    {
+      "text": " ten.",
+      "startMs": 7283,
+      "endMs": 7580,
+      "timestampMs": null,
+      "confidence": 0.9906
+    },
+    {
+      "text": " Mission",
+      "startMs": 7827,
+      "endMs": 8147,
+      "timestampMs": null,
+      "confidence": 0.878
+    },
+    {
+      "text": " trips",
+      "startMs": 8147,
+      "endMs": 8477,
+      "timestampMs": null,
+      "confidence": 0.8823
+    },
+    {
+      "text": " where",
+      "startMs": 8477,
+      "endMs": 8717,
+      "timestampMs": null,
+      "confidence": 0.9165
+    },
+    {
+      "text": " I",
+      "startMs": 8717,
+      "endMs": 8857,
+      "timestampMs": null,
+      "confidence": 0.9921
+    },
+    {
+      "text": " helped",
+      "startMs": 8857,
+      "endMs": 9197,
+      "timestampMs": null,
+      "confidence": 0.9374
+    },
+    {
+      "text": " others.",
+      "startMs": 9197,
+      "endMs": 9647,
+      "timestampMs": null,
+      "confidence": 0.9863
+    },
+    {
+      "text": " One",
+      "startMs": 9910,
+      "endMs": 10090,
+      "timestampMs": null,
+      "confidence": 0.9932
+    },
+    {
+      "text": " out",
+      "startMs": 10090,
+      "endMs": 10210,
+      "timestampMs": null,
+      "confidence": 0.9995
+    },
+    {
+      "text": " of",
+      "startMs": 10210,
+      "endMs": 10370,
+      "timestampMs": null,
+      "confidence": 0.9967
+    },
+    {
+      "text": " ten.",
+      "startMs": 10370,
+      "endMs": 10622,
+      "timestampMs": null,
+      "confidence": 0.9936
+    },
+    {
+      "text": " Why",
+      "startMs": 10854,
+      "endMs": 11003,
+      "timestampMs": null,
+      "confidence": 0.9917
+    },
+    {
+      "text": " that",
+      "startMs": 11003,
+      "endMs": 11253,
+      "timestampMs": null,
+      "confidence": 0.9825
+    },
+    {
+      "text": " work",
+      "startMs": 11253,
+      "endMs": 11663,
+      "timestampMs": null,
+      "confidence": 0.9793
+    },
+    {
+      "text": " interests",
+      "startMs": 11663,
+      "endMs": 12153,
+      "timestampMs": null,
+      "confidence": 0.9861
+    },
+    {
+      "text": " me.",
+      "startMs": 12153,
+      "endMs": 12479,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " Six",
+      "startMs": 12700,
+      "endMs": 12893,
+      "timestampMs": null,
+      "confidence": 0.9749
+    },
+    {
+      "text": " out",
+      "startMs": 12893,
+      "endMs": 13033,
+      "timestampMs": null,
+      "confidence": 0.9997
+    },
+    {
+      "text": " of",
+      "startMs": 13033,
+      "endMs": 13173,
+      "timestampMs": null,
+      "confidence": 0.999
+    },
+    {
+      "text": " ten.",
+      "startMs": 13173,
+      "endMs": 13432,
+      "timestampMs": null,
+      "confidence": 0.9935
+    },
+    {
+      "text": " I",
+      "startMs": 13654,
+      "endMs": 13817,
+      "timestampMs": null,
+      "confidence": 0.9969
+    },
+    {
+      "text": " want",
+      "startMs": 13817,
+      "endMs": 13967,
+      "timestampMs": null,
+      "confidence": 0.9847
+    },
+    {
+      "text": " a",
+      "startMs": 13967,
+      "endMs": 14197,
+      "timestampMs": null,
+      "confidence": 0.8706
+    },
+    {
+      "text": " prestigious",
+      "startMs": 14197,
+      "endMs": 14917,
+      "timestampMs": null,
+      "confidence": 0.1619
+    },
+    {
+      "text": " employer.",
+      "startMs": 14917,
+      "endMs": 15824,
+      "timestampMs": null,
+      "confidence": 0.7251
+    },
+    {
+      "text": " One",
+      "startMs": 16065,
+      "endMs": 16290,
+      "timestampMs": null,
+      "confidence": 0.9941
+    },
+    {
+      "text": " out",
+      "startMs": 16290,
+      "endMs": 16420,
+      "timestampMs": null,
+      "confidence": 0.9994
+    },
+    {
+      "text": " of",
+      "startMs": 16420,
+      "endMs": 16570,
+      "timestampMs": null,
+      "confidence": 0.9981
+    },
+    {
+      "text": " ten.",
+      "startMs": 16570,
+      "endMs": 16848,
+      "timestampMs": null,
+      "confidence": 0.9967
+    },
+    {
+      "text": " I",
+      "startMs": 17092,
+      "endMs": 17237,
+      "timestampMs": null,
+      "confidence": 0.995
+    },
+    {
+      "text": " want",
+      "startMs": 17237,
+      "endMs": 17397,
+      "timestampMs": null,
+      "confidence": 0.9996
+    },
+    {
+      "text": " to",
+      "startMs": 17397,
+      "endMs": 17547,
+      "timestampMs": null,
+      "confidence": 0.999
+    },
+    {
+      "text": " be",
+      "startMs": 17547,
+      "endMs": 17757,
+      "timestampMs": null,
+      "confidence": 0.9966
+    },
+    {
+      "text": " successful.",
+      "startMs": 17757,
+      "endMs": 18251,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " Zero",
+      "startMs": 18489,
+      "endMs": 18833,
+      "timestampMs": null,
+      "confidence": 0.9849
+    },
+    {
+      "text": " out",
+      "startMs": 18833,
+      "endMs": 19003,
+      "timestampMs": null,
+      "confidence": 0.9995
+    },
+    {
+      "text": " of",
+      "startMs": 19003,
+      "endMs": 19153,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " ten.",
+      "startMs": 19153,
+      "endMs": 19348,
+      "timestampMs": null,
+      "confidence": 0.9968
+    },
+    {
+      "text": " What",
+      "startMs": 19601,
+      "endMs": 19747,
+      "timestampMs": null,
+      "confidence": 0.9159
+    },
+    {
+      "text": " I",
+      "startMs": 19747,
+      "endMs": 19937,
+      "timestampMs": null,
+      "confidence": 0.9896
+    },
+    {
+      "text": " learned",
+      "startMs": 19937,
+      "endMs": 20317,
+      "timestampMs": null,
+      "confidence": 0.8317
+    },
+    {
+      "text": " shadowing",
+      "startMs": 20317,
+      "endMs": 20757,
+      "timestampMs": null,
+      "confidence": 0.5356
+    },
+    {
+      "text": " an",
+      "startMs": 20757,
+      "endMs": 21067,
+      "timestampMs": null,
+      "confidence": 0.8907
+    },
+    {
+      "text": " analyst.",
+      "startMs": 21067,
+      "endMs": 21449,
+      "timestampMs": null,
+      "confidence": 0.9966
+    },
+    {
+      "text": " Six",
+      "startMs": 21700,
+      "endMs": 21977,
+      "timestampMs": null,
+      "confidence": 0.9799
+    },
+    {
+      "text": " out",
+      "startMs": 21977,
+      "endMs": 22077,
+      "timestampMs": null,
+      "confidence": 0.9994
+    },
+    {
+      "text": " of",
+      "startMs": 22077,
+      "endMs": 22207,
+      "timestampMs": null,
+      "confidence": 0.9992
+    },
+    {
+      "text": " ten.",
+      "startMs": 22207,
+      "endMs": 22424,
+      "timestampMs": null,
+      "confidence": 0.9951
+    },
+    {
+      "text": " I",
+      "startMs": 22668,
+      "endMs": 22817,
+      "timestampMs": null,
+      "confidence": 0.9809
+    },
+    {
+      "text": " want",
+      "startMs": 22817,
+      "endMs": 22957,
+      "timestampMs": null,
+      "confidence": 0.9984
+    },
+    {
+      "text": " to",
+      "startMs": 22957,
+      "endMs": 23107,
+      "timestampMs": null,
+      "confidence": 0.9905
+    },
+    {
+      "text": " become",
+      "startMs": 23107,
+      "endMs": 23317,
+      "timestampMs": null,
+      "confidence": 0.9936
+    },
+    {
+      "text": " a",
+      "startMs": 23317,
+      "endMs": 23517,
+      "timestampMs": null,
+      "confidence": 0.9911
+    },
+    {
+      "text": " leader.",
+      "startMs": 23517,
+      "endMs": 23830,
+      "timestampMs": null,
+      "confidence": 0.9931
+    },
+    {
+      "text": " Two",
+      "startMs": 24059,
+      "endMs": 24220,
+      "timestampMs": null,
+      "confidence": 0.9968
+    },
+    {
+      "text": " out",
+      "startMs": 24220,
+      "endMs": 24350,
+      "timestampMs": null,
+      "confidence": 0.9997
+    },
+    {
+      "text": " of",
+      "startMs": 24350,
+      "endMs": 24500,
+      "timestampMs": null,
+      "confidence": 0.9982
+    },
+    {
+      "text": " ten.",
+      "startMs": 24500,
+      "endMs": 24714,
+      "timestampMs": null,
+      "confidence": 0.9952
+    },
+    {
+      "text": " Helping",
+      "startMs": 24963,
+      "endMs": 25318,
+      "timestampMs": null,
+      "confidence": 0.9912
+    },
+    {
+      "text": " companies",
+      "startMs": 25318,
+      "endMs": 25743,
+      "timestampMs": null,
+      "confidence": 0.9981
+    },
+    {
+      "text": " make",
+      "startMs": 25743,
+      "endMs": 26173,
+      "timestampMs": null,
+      "confidence": 0.9934
+    },
+    {
+      "text": " acquisitions.",
+      "startMs": 26173,
+      "endMs": 26805,
+      "timestampMs": null,
+      "confidence": 0.9938
+    },
+    {
+      "text": " Five",
+      "startMs": 27022,
+      "endMs": 27343,
+      "timestampMs": null,
+      "confidence": 0.9917
+    },
+    {
+      "text": " out",
+      "startMs": 27343,
+      "endMs": 27493,
+      "timestampMs": null,
+      "confidence": 0.9998
+    },
+    {
+      "text": " of",
+      "startMs": 27493,
+      "endMs": 27643,
+      "timestampMs": null,
+      "confidence": 0.9989
+    },
+    {
+      "text": " ten.",
+      "startMs": 27643,
+      "endMs": 27902,
+      "timestampMs": null,
+      "confidence": 0.9919
+    },
+    {
+      "text": " Consulting",
+      "startMs": 28118,
+      "endMs": 28550,
+      "timestampMs": null,
+      "confidence": 0.9323
+    },
+    {
+      "text": " sounds",
+      "startMs": 28550,
+      "endMs": 29000,
+      "timestampMs": null,
+      "confidence": 0.9846
+    },
+    {
+      "text": " interesting.",
+      "startMs": 29000,
+      "endMs": 29559,
+      "timestampMs": null,
+      "confidence": 0.9984
+    },
+    {
+      "text": " Two",
+      "startMs": 29801,
+      "endMs": 29993,
+      "timestampMs": null,
+      "confidence": 0.9962
+    },
+    {
+      "text": " out",
+      "startMs": 29993,
+      "endMs": 30143,
+      "timestampMs": null,
+      "confidence": 0.9998
+    },
+    {
+      "text": " of",
+      "startMs": 30143,
+      "endMs": 30303,
+      "timestampMs": null,
+      "confidence": 0.999
+    },
+    {
+      "text": " ten.",
+      "startMs": 30303,
+      "endMs": 30614,
+      "timestampMs": null,
+      "confidence": 0.9969
+    },
+    {
+      "text": " A",
+      "startMs": 30866,
+      "endMs": 31153,
+      "timestampMs": null,
+      "confidence": 0.978
+    },
+    {
+      "text": " project",
+      "startMs": 31153,
+      "endMs": 31513,
+      "timestampMs": null,
+      "confidence": 0.998
+    },
+    {
+      "text": " that",
+      "startMs": 31513,
+      "endMs": 31813,
+      "timestampMs": null,
+      "confidence": 0.998
+    },
+    {
+      "text": " tested",
+      "startMs": 31813,
+      "endMs": 32123,
+      "timestampMs": null,
+      "confidence": 0.9947
+    },
+    {
+      "text": " my",
+      "startMs": 32123,
+      "endMs": 32383,
+      "timestampMs": null,
+      "confidence": 0.9981
+    },
+    {
+      "text": " interest.",
+      "startMs": 32383,
+      "endMs": 32797,
+      "timestampMs": null,
+      "confidence": 0.9249
+    },
+    {
+      "text": " Seven",
+      "startMs": 33028,
+      "endMs": 33330,
+      "timestampMs": null,
+      "confidence": 0.9813
+    },
+    {
+      "text": " out",
+      "startMs": 33330,
+      "endMs": 33460,
+      "timestampMs": null,
+      "confidence": 0.9998
+    },
+    {
+      "text": " of",
+      "startMs": 33460,
+      "endMs": 33610,
+      "timestampMs": null,
+      "confidence": 0.9986
+    },
+    {
+      "text": " ten.",
+      "startMs": 33610,
+      "endMs": 33889,
+      "timestampMs": null,
+      "confidence": 0.9956
+    },
+    {
+      "text": " I",
+      "startMs": 34126,
+      "endMs": 34283,
+      "timestampMs": null,
+      "confidence": 0.9975
+    },
+    {
+      "text": " want",
+      "startMs": 34283,
+      "endMs": 34553,
+      "timestampMs": null,
+      "confidence": 0.9979
+    },
+    {
+      "text": " an",
+      "startMs": 34553,
+      "endMs": 35023,
+      "timestampMs": null,
+      "confidence": 0.9873
+    },
+    {
+      "text": " international",
+      "startMs": 35023,
+      "endMs": 35563,
+      "timestampMs": null,
+      "confidence": 0.9986
+    },
+    {
+      "text": " career.",
+      "startMs": 35563,
+      "endMs": 36044,
+      "timestampMs": null,
+      "confidence": 0.9998
+    },
+    {
+      "text": " Two",
+      "startMs": 36258,
+      "endMs": 36423,
+      "timestampMs": null,
+      "confidence": 0.9889
+    },
+    {
+      "text": " out",
+      "startMs": 36423,
+      "endMs": 36563,
+      "timestampMs": null,
+      "confidence": 0.9998
+    },
+    {
+      "text": " of",
+      "startMs": 36563,
+      "endMs": 36723,
+      "timestampMs": null,
+      "confidence": 0.9988
+    },
+    {
+      "text": " ten.",
+      "startMs": 36723,
+      "endMs": 36954,
+      "timestampMs": null,
+      "confidence": 0.9974
+    },
+    {
+      "text": " I",
+      "startMs": 37197,
+      "endMs": 37353,
+      "timestampMs": null,
+      "confidence": 0.9988
+    },
+    {
+      "text": " want",
+      "startMs": 37353,
+      "endMs": 37513,
+      "timestampMs": null,
+      "confidence": 0.9996
+    },
+    {
+      "text": " to",
+      "startMs": 37513,
+      "endMs": 37673,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " make",
+      "startMs": 37673,
+      "endMs": 37823,
+      "timestampMs": null,
+      "confidence": 0.999
+    },
+    {
+      "text": " an",
+      "startMs": 37823,
+      "endMs": 38043,
+      "timestampMs": null,
+      "confidence": 0.9951
+    },
+    {
+      "text": " impact.",
+      "startMs": 38043,
+      "endMs": 38251,
+      "timestampMs": null,
+      "confidence": 0.9986
+    },
+    {
+      "text": " Two",
+      "startMs": 38494,
+      "endMs": 38650,
+      "timestampMs": null,
+      "confidence": 0.9938
+    },
+    {
+      "text": " out",
+      "startMs": 38650,
+      "endMs": 38790,
+      "timestampMs": null,
+      "confidence": 0.9997
+    },
+    {
+      "text": " of",
+      "startMs": 38790,
+      "endMs": 38940,
+      "timestampMs": null,
+      "confidence": 0.9987
+    },
+    {
+      "text": " ten.",
+      "startMs": 38940,
+      "endMs": 39153,
+      "timestampMs": null,
+      "confidence": 0.9979
+    },
+    {
+      "text": " A",
+      "startMs": 39388,
+      "endMs": 39613,
+      "timestampMs": null,
+      "confidence": 0.9938
+    },
+    {
+      "text": " conversation",
+      "startMs": 39613,
+      "endMs": 40023,
+      "timestampMs": null,
+      "confidence": 0.9932
+    },
+    {
+      "text": " that",
+      "startMs": 40023,
+      "endMs": 40433,
+      "timestampMs": null,
+      "confidence": 0.9966
+    },
+    {
+      "text": " changed",
+      "startMs": 40433,
+      "endMs": 40803,
+      "timestampMs": null,
+      "confidence": 0.9914
+    },
+    {
+      "text": " my",
+      "startMs": 40803,
+      "endMs": 41143,
+      "timestampMs": null,
+      "confidence": 0.976
+    },
+    {
+      "text": " target",
+      "startMs": 41143,
+      "endMs": 41433,
+      "timestampMs": null,
+      "confidence": 0.9652
+    },
+    {
+      "text": " role.",
+      "startMs": 41433,
+      "endMs": 41697,
+      "timestampMs": null,
+      "confidence": 0.6559
+    },
+    {
+      "text": " Seven",
+      "startMs": 41916,
+      "endMs": 42160,
+      "timestampMs": null,
+      "confidence": 0.9757
+    },
+    {
+      "text": " out",
+      "startMs": 42160,
+      "endMs": 42320,
+      "timestampMs": null,
+      "confidence": 0.9996
+    },
+    {
+      "text": " of",
+      "startMs": 42320,
+      "endMs": 42490,
+      "timestampMs": null,
+      "confidence": 0.9991
+    },
+    {
+      "text": " ten.",
+      "startMs": 42490,
+      "endMs": 42703,
+      "timestampMs": null,
+      "confidence": 0.9979
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Add a headline to Image 1 (a real 9:16 video frame of a man in a black t-shirt at a podcast).
+TYPEFACE — most important: the headline must be set in the exact typeface shown in Image 2 (URW Grotesk Condensed Bold). Copy its letter shapes, proportions, stroke weight and spacing exactly; the words, line breaks and relative line sizes in Image 2 are exactly the headline to place. Do NOT use any other font (no Bebas, no Anton, no Impact).
+FINISH, from Image 3 only (not its font): white-to-silver metallic vertical gradient fill and a soft dark drop shadow.
+Placement: lower third, over his chest/lap area, centred, inside the central area of the frame (not in the bottom 12%). It must not cover his face.
+Headline, three stacked centred lines, sizes increasing exactly as in Image 2:
+HOW TO FIND
+LIKE-MINDED
+PEOPLE

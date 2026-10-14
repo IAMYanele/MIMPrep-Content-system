@@ -1,0 +1,102 @@
+{
+ "same-goal": {
+  "from": 5.12,
+  "dur": 9
+ },
+ "the-book": {
+  "from": 21.48,
+  "dur": 6
+ },
+ "four-cards": {
+  "from": 31.6,
+  "dur": 6.48
+ },
+ "chapter-1": {
+  "from": 38.16,
+  "dur": 4
+ },
+ "thirty-seven": {
+  "from": 44.1,
+  "dur": 10
+ },
+ "cram-vs-daily": {
+  "from": 71.6,
+  "dur": 7
+ },
+ "valley": {
+  "from": 97.78,
+  "dur": 11
+ },
+ "chapter-2": {
+  "from": 125.94,
+  "dur": 4
+ },
+ "problem-1": {
+  "from": 136.76,
+  "dur": 5
+ },
+ "problem-3": {
+  "from": 172.31,
+  "dur": 4.36
+ },
+ "seven-hundred": {
+  "from": 147.56,
+  "dur": 8
+ },
+ "holding-pattern": {
+  "from": 176.75,
+  "dur": 7
+ },
+ "system-over-outcome": {
+  "from": 195.85,
+  "dur": 6
+ },
+ "chapter-3": {
+  "from": 222.71,
+  "dur": 4
+ },
+ "arrow-flip": {
+  "from": 236.49,
+  "dur": 10
+ },
+ "ordinary-tuesday": {
+  "from": 275.09,
+  "dur": 7
+ },
+ "chapter-4": {
+  "from": 283.25,
+  "dur": 4
+ },
+ "habit-loop": {
+  "from": 292.31,
+  "dur": 9
+ },
+ "lever-1": {
+  "from": 313.25,
+  "dur": 8
+ },
+ "lever-2": {
+  "from": 340.47,
+  "dur": 6
+ },
+ "lever-3": {
+  "from": 366.37,
+  "dur": 6
+ },
+ "lever-4": {
+  "from": 385.57,
+  "dur": 8
+ },
+ "recap": {
+  "from": 416.31,
+  "dur": 11
+ },
+ "envelope-open": {
+  "from": 476.01,
+  "dur": 8
+ },
+ "promo": {
+  "from": 492.91,
+  "dur": 7
+ }
+}

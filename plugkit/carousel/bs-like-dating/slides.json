@@ -1,0 +1,142 @@
+{
+  "title": "Applying to business school is like dating",
+  "format": "1080x1440 (3:4)",
+  "slides": [
+    {
+      "n": 1,
+      "photo": 305,
+      "frame": "frames/s1-305.png",
+      "zone": "top",
+      "y": 90,
+      "limit": 620,
+      "circle": "dating.",
+      "blocks": [
+        {
+          "style": "cover",
+          "text": "Applying to business school is like dating."
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "photo": 307,
+      "frame": "frames/s2-307.png",
+      "zone": "top",
+      "y": 60,
+      "limit": 700,
+      "blocks": [
+        {
+          "style": "head",
+          "text": "You need to show that you have options and be confident about what you bring to the table without being too arrogant/direct."
+        },
+        {
+          "style": "body",
+          "text": "It's about striking that perfect balance between showcasing your value without being too cocky during the interview, you still need to be likeable. You need to demonstrate that you're a catch - highlighting your accomplishments, potential, and unique qualities - while simultaneously conveying genuine interest in the specific school."
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "photo": 119,
+      "frame": "frames/s3-119.png",
+      "zone": "top",
+      "y": 60,
+      "limit": 520,
+      "blocks": [
+        {
+          "style": "head",
+          "text": "London Business School, HEC and ESSEC are facing so many applicants that they've created a new category between acceptance and waitlist."
+        },
+        {
+          "style": "body",
+          "text": "For these borderline candidates, LBS now directly asks them to disclose competing offers from other schools before making a final decision."
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "photo": 98,
+      "frame": "frames/s4-098.png",
+      "zone": "top",
+      "y": 60,
+      "limit": 560,
+      "blocks": [
+        {
+          "style": "head",
+          "text": "Others wanting you can make you more desirable."
+        },
+        {
+          "style": "body",
+          "text": "LBS is essentially saying, \"We're interested, but we want to know who else is interested in you too.\" They're looking for validation of your worth through the opinions of their peers (other prestigious schools)."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "photo": 164,
+      "frame": "frames/s5-164.png",
+      "zone": "bottom",
+      "y": 1385,
+      "limit": 830,
+      "blocks": [
+        {
+          "style": "head",
+          "text": "For applicants, this creates an interesting strategic challenge."
+        },
+        {
+          "style": "body",
+          "text": "Do you reveal all your offers and risk appearing uncommitted to LBS specifically? Do you highlight only certain offers to position yourself in the best light? Or do you emphasize your strong preference for LBS while tactfully mentioning other options?"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "photo": 301,
+      "frame": "frames/s6-301.png",
+      "zone": "top",
+      "y": 60,
+      "limit": 680,
+      "blocks": [
+        {
+          "style": "head",
+          "text": "Just as in dating, there's a fine line between playing hard to get and showing genuine interest."
+        },
+        {
+          "style": "body",
+          "text": "You want to demonstrate that you have options (which makes you more coveted from a market standpoint) while still conveying that this particular school holds special appeal for you."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "photo": 177,
+      "frame": "frames/s7-177.png",
+      "zone": "bottom",
+      "y": 1390,
+      "limit": 700,
+      "blocks": [
+        {
+          "style": "body",
+          "text": "If you are unsure about what personal story nuance you should emphasize, if you're eligible for a diversity quota because of your background/nationality/career plan, or you're hesitant between retaking the GMAT or not, 3 of our mentors from LBS, HEC and LSE will give consultation calls inside MiM Prep to help with this."
+        },
+        {
+          "style": "body",
+          "text": "To apply: Follow Thomas Dussud and MiM Prep."
+        },
+        {
+          "style": "cta",
+          "text": "Comment \"STRATEGY\""
+        },
+        {
+          "style": "body",
+          "text": "And I'll be in touch"
+        }
+      ],
+      "fade": {
+        "start": 430,
+        "full": 930,
+        "strength": 0.78
+      }
+    }
+  ]
+}

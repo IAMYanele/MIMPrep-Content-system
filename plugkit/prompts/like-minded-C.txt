@@ -1,0 +1,11 @@
+REFERENCE IMAGES:
+- Image 1 and Image 2 are the SAME real man (long dark hair, black t-shirt). He is the subject. Keep his face, hair and build exactly recognisable — this must clearly be him, photorealistic, not a lookalike.
+- Image 3 is a screenshot of three existing Instagram reel covers. Match their STYLE exactly (not their content or text): photorealistic cinematic photo, warm low-key interior lighting, shallow depth of field, rich but natural colour, subtle film look; headline in a tall condensed sans-serif (like Bebas Neue / Anton), ALL CAPS, filled with a white-to-silver metallic vertical gradient, with a soft dark drop shadow; stacked lines where the small line sits on top and the key words are much bigger underneath, tightly leaded, centred.
+
+FORMAT: vertical 9:16 Instagram reel cover. Keep his face and ALL text inside the central 3:4 area (nothing important in the top or bottom 12%). No logos, no watermarks, no extra text, no UI, no captions, no emojis. Spell the headline EXACTLY as given, nothing else written anywhere.
+
+SCENE: Rooftop terrace networking evening at golden hour in a city, string lights and blurred skyline behind. He stands in the foreground slightly off-centre, three-quarter body, holding a drink, looking thoughtfully off to the side; behind him, out of focus, small groups of young professionals talking. Cinematic, warm, aspirational but real.
+
+HEADLINE (top of the frame, two stacked lines, like "HOW TO OFFSET / A LOW GPA" in Image 3):
+line 1 (smaller): BE AROUND
+line 2 (much bigger, may wrap onto two lines): LIKE-MINDED PEOPLE
