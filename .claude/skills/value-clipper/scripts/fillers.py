@@ -139,8 +139,9 @@ def main():
             # One call per burst took 10+ minutes on a 7-minute segment.
             import numpy as np, wave
             t0 = words[0]["s"] - 1.0
-            raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0, t0):.3f}", "-t", f"{words[-1]['e'] - t0 + 2:.3f}",
-                                  "-i", a.src, "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
+            from audio import seek
+            raw = subprocess.run(["ffmpeg", "-v", "error"] + seek(a.src, max(0, t0), words[-1]['e'] - t0 + 2)
+                                 + ["-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
             pcm = np.frombuffer(raw, np.int16)
             sil = np.zeros(16000, np.int16)
             parts, spans, pos = [], [], 0.0

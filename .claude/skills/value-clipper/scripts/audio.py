@@ -11,11 +11,20 @@ import numpy as np
 FRAME = 0.01
 
 
+def seek(src, start, dur=None):
+    """ffmpeg input args for [start, start+dur] that are fast AND exact.
+    A plain fast seek (-ss before -i) with -t returned 0.29s instead of 1.2s on stream-copied
+    files (Fathom HLS downloads), which corrupted loudness tracks and dip cuts. Fast-seek to 3s
+    before, then seek exactly from there."""
+    pre = max(0.0, start - 3.0)
+    a = ["-ss", f"{pre:.3f}", "-i", src, "-ss", f"{start - pre:.3f}"]
+    return a + (["-t", f"{dur:.3f}"] if dur else [])
+
+
 class Track:
     def __init__(self, src, start=0.0, end=None):
-        cmd = ["ffmpeg", "-v", "error", "-ss", f"{start:.3f}", "-i", src]
-        if end:
-            cmd += ["-t", f"{end - start:.3f}"]
+        start = max(0.0, start)
+        cmd = ["ffmpeg", "-v", "error"] + seek(src, start, (end - start) if end else None)
         cmd += ["-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"]
         x = np.frombuffer(subprocess.run(cmd, capture_output=True).stdout, np.int16).astype(np.float32) / 32768
         n = len(x) // 160

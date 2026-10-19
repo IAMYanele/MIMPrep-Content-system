@@ -18,10 +18,13 @@ writes <out>/pauses.json: {"noise_db", "pauses": [[start, end, mid], ...], "susp
 import argparse, json, re, subprocess
 from pathlib import Path
 import numpy as np
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from audio import seek
 
 
 def slices_db(src, start, end, step=0.25):
-    p = subprocess.run(["ffmpeg", "-hide_banner", "-ss", f"{start:.3f}", "-t", f"{end - start:.3f}", "-i", src, "-vn",
+    p = subprocess.run(["ffmpeg", "-hide_banner"] + seek(src, start, end - start) + ["-vn",
                         "-af", f"asetnsamples=n={int(16000 * step)},astats=metadata=1:reset=1,"
                                "ametadata=print:key=lavfi.astats.Overall.RMS_level", "-ar", "16000", "-f", "null", "-"],
                        capture_output=True, text=True).stderr
@@ -47,7 +50,7 @@ def otsu(db):
 
 
 def silences(src, start, end, noise, d):
-    p = subprocess.run(["ffmpeg", "-hide_banner", "-ss", f"{start:.3f}", "-t", f"{end - start:.3f}", "-i", src, "-vn",
+    p = subprocess.run(["ffmpeg", "-hide_banner"] + seek(src, start, end - start) + ["-vn",
                         "-af", f"silencedetect=noise={noise:.1f}dB:d={d}", "-f", "null", "-"], capture_output=True, text=True).stderr
     if "Press [q]" not in p and "silencedetect" not in p and "Output #0" not in p:
         raise SystemExit("ffmpeg printed nothing: check the source path (never trust an empty silence map)")

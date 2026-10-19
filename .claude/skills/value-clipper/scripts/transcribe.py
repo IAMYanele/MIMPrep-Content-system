@@ -25,7 +25,8 @@ usage:
   python transcribe.py "<raw.mp4>" --out <job>/seg1 --start 412.0 --end 655.5
   python transcribe.py "<raw.mp4>" --out <job>/full --local      # skip the API
 """
-import argparse, json, os, re, subprocess, tempfile
+import argparse, json, os, re, subprocess, sys, tempfile
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -41,12 +42,8 @@ def hms(t):
 
 
 def extract(src, start, end, out):
-    cmd = ["ffmpeg", "-v", "error", "-y"]
-    if start:
-        cmd += ["-ss", f"{start:.3f}"]
-    cmd += ["-i", src]
-    if end:
-        cmd += ["-t", f"{end - (start or 0):.3f}"]
+    from audio import seek                       # fast + exact seek (plain -ss before -i truncates on HLS copies)
+    cmd = ["ffmpeg", "-v", "error", "-y"] + seek(src, start or 0.0, (end - (start or 0)) if end else None)
     cmd += ["-vn", "-ac", "1", "-ar", "16000", "-b:a", "64k", out]
     subprocess.run(cmd, check=True)
 

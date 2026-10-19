@@ -20,7 +20,8 @@ on a word start shaves the consonant.
 The dry run prints the joined script with "|" at every join and [MOVED] on blocks out of
 source order. Read it aloud: it must play as one continuous thought, with no dangling
 "and that's why..." and no "this"/"he" pointing at something that was cut.
-Rendering: frame-accurate trim/atrim per window, 20ms audio fades at every join, concat,
+Rendering: frame-accurate trim per window with hard video cuts, audio crossfaded across every join
+(30-60ms, centred on the cut so sync holds), concat,
 original resolution and frame rate, two-pass loudnorm to -14 LUFS. Then the output is
 re-transcribed (locally) and printed, so the words are checked in the actual file.
 """
@@ -96,6 +97,12 @@ def windows(plan, pauses, track=None, sets=()):
         else:
             merged.append((x, y, k))
     snap = {"block": snap_block, "cut": snap_cut, "gap": lambda t, *a: (t, "pause")}
+    if plan.get("exact_edges"):
+        # every edge was measured on the audio already (keeps.py): use it as is. Re-snapping to the
+        # deepest dip within 0.12s moved a hand-placed cut after "advice" into "The" of the next line
+        def exact(t, pauses, start, track=None):
+            return t, ("pause" if _inside(t, pauses) else "dip")
+        snap = {"block": exact, "cut": exact, "gap": snap["gap"]}
     out = []
     for bi, b in enumerate(plan["blocks"]):
         pieces, cur, cur_kind = [], b["from"], "block"
@@ -104,8 +111,11 @@ def windows(plan, pauses, track=None, sets=()):
                 pieces.append((cur, cur_kind, x, k)); cur, cur_kind = max(cur, y), k
         pieces.append((cur, cur_kind, b["to"], "block"))
         for s, s_kind, e, e_kind in pieces:
-            ss, k1 = snap[s_kind](s, pauses, True, track)
-            ee, k2 = snap[e_kind](e, pauses, False, track)
+            # "exact": the block's edges were measured (keeps.py-style boundaries), not read off a
+            # transcript, so they stay put like a removal edge instead of reaching for a pause
+            # up to 0.6s away, which pulled "When, so" back into the start of a clip
+            ss, k1 = (snap_cut if s_kind == "block" and b.get("exact") and not plan.get("exact_edges") else snap[s_kind])(s, pauses, True, track)
+            ee, k2 = (snap_cut if e_kind == "block" and b.get("exact") and not plan.get("exact_edges") else snap[e_kind])(e, pauses, False, track)
             if ee - ss > 0.15:
                 out.append({"block": bi, "s": round(ss, 3), "e": round(ee, 3), "ok_start": k1 != "none", "ok_end": k2 != "none",
                             "how": (k1, k2),
@@ -159,14 +169,30 @@ def text_of(sets, s, e):
     return " ".join(w["w"] for w in ws if s - 0.05 <= w["s"] < e - 0.05)
 
 
+def join_fade(a, b):
+    """Audio crossfade length at the join a|b. Fading each side to zero (the old way) left a
+    small hole in the room tone at every join, and with 20+ joins a clip sounded chopped.
+    A crossfade centred on the cut keeps the sound continuous: 60ms where both sides sit in
+    silence, 30ms at an energy dip, where a longer one would smear the next word's onset."""
+    return 0.03 if "dip" in (a.get("how", ("", ""))[1], b.get("how", ("", ""))[0]) else 0.06
+
+
 def render(src, wins, out):
-    parts = []
+    """Video: hard cuts on the frame. Audio: each window is taken d/2 wider at every join and
+    the neighbours crossfade over d, so the audio stays exactly as long as the video."""
+    parts, n = [], len(wins)
+    fades = [join_fade(wins[i], wins[i + 1]) for i in range(n - 1)]
     for i, w in enumerate(wins):
-        d = w["e"] - w["s"]; f = min(0.012 if "dip" in w.get("how", ()) else 0.02, d / 4)   # dip cuts: shorter fade
+        pre = fades[i - 1] / 2 if i else 0.0
+        post = fades[i] / 2 if i < n - 1 else 0.0
         parts.append(f"[0:v]trim=start={w['s']:.3f}:end={w['e']:.3f},setpts=PTS-STARTPTS[v{i}]")
-        parts.append(f"[0:a]atrim=start={w['s']:.3f}:end={w['e']:.3f},asetpts=PTS-STARTPTS,"
-                     f"afade=t=in:d={f:.3f},afade=t=out:st={d - f:.3f}:d={f:.3f}[a{i}]")
-    parts.append("".join(f"[v{i}][a{i}]" for i in range(len(wins))) + f"concat=n={len(wins)}:v=1:a=1[v][a]")
+        parts.append(f"[0:a]atrim=start={max(0.0, w['s'] - pre):.3f}:end={w['e'] + post:.3f},asetpts=PTS-STARTPTS[a{i}]")
+    parts.append("".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0[v]")
+    prev = "a0"
+    for i in range(1, n):
+        parts.append(f"[{prev}][a{i}]acrossfade=d={fades[i - 1]:.3f}:c1=tri:c2=tri[x{i}]"); prev = f"x{i}"
+    total = sum(w["e"] - w["s"] for w in wins)
+    parts.append(f"[{prev}]afade=t=in:d=0.04,afade=t=out:st={max(0.0, total - 0.12):.3f}:d=0.12[a]")
     tmp = str(Path(out).with_suffix(".tmp.mp4"))
     subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", src, "-filter_complex", ";".join(parts),
                     "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p",
