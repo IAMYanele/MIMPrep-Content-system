@@ -11,6 +11,13 @@ schedule it via PlugKit." Nobody should have to remember the cover separately, a
 shouldn't wait until the edit is finished. So every edit starts the cover first, in
 parallel.
 
+## 0. Raw footage? Clip it first
+
+If what you've been handed is a raw take or a long recording (a CV review session, a GMAT
+session, a consultation call, a podcast), run `value-clipper` first: value segments, then
+approval, then clean clips. The cover job starts per approved clip, when that clip's edit
+starts. Don't make covers for segments the user hasn't approved.
+
 ## 1. Before touching the edit: launch the cover job
 
 Work out, from the request and the files:

@@ -63,15 +63,21 @@ silently re-encoded three delivered clips.
 
 ## Stage 1: clipping the long take
 
+Do the clipping with the `value-clipper` skill (its three levels and scripts: find the
+feedback points, strip fillers and repeats, optionally a rearranged version). The CV-specific
+rules below still apply on top.
+
 **The clip is feedback, not the CV read aloud.** Thomas (or the reviewer) often reads
 the CV out before commenting. That part goes. A CV 08 cut was rejected as "a
 regurgitation of the CV" because half of it was him reading "BBA, Yonsei University,
 Top 3% Dean's List". Keep only what's wrong with the CV, why, and how to fix it, plus
 the score.
 
-**Keep source order.** Points appear in the order they were said. Reordering for a
-better arc was rejected outright. Pick the 3-4 main points, keep them in sequence,
-drop everything between.
+**The in-order cut is always the deliverable.** Points appear in the order they were
+said. A reordered-for-virality cut was rejected outright on the first batch. Since
+2026-10-19 a rearranged version may be offered ALONGSIDE the in-order one (value-clipper
+Level 3, e.g. opening on the score), with every move listed, and the user picks. It never
+replaces the in-order cut. Pick the 3-4 main points and drop everything between.
 
 **Only CV feedback.** Career advice, market talk and anecdotes go, even when they're
 good. The clip is about the document.

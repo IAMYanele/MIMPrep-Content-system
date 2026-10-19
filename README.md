@@ -17,6 +17,7 @@ powershell -ExecutionPolicy Bypass -File install-skills.ps1     # Windows
 | Skill | What it does |
 |---|---|
 | `edit-with-thumbnail` | The coordinator. Whenever a video edit starts, it launches the cover in the background so the edit and 3 cover options arrive together. |
+| `value-clipper` | Raw recording to clean clips in three levels: find the value segments (approval first), strip fillers, repeats and restarts cutting only in pauses, then optionally a rearranged version next to the in-order one. |
 | `cv-review-vertical` | CV review footage to sub-1:15 clips and 9:16 split-screen verticals (reviewer on top, blurred CV scrolling below), plus the privacy and consent checks. |
 | `thomas-broll-reel` | The "Talk about your background" ad style: vertical reframe per camera shot, white-pill captions, ~2s cutaways of Thomas's own b-roll. Uses the `ThomasBrollReel` Remotion comp. |
 | `thomas-reel-cover` | @thomas_d_c reel covers: real photo or frame, dark editorial grade, Helvetica Now headline. Nano Banana adds the text only. 3 options and a grid preview. |
