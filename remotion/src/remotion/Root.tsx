@@ -129,6 +129,11 @@ import {
 import { ThomasEvent, thomasEventMetadata } from "./Thomas/ThomasEvent";
 import { ThomasBackground } from "./ThomasBg/ThomasBackground";
 import { DURATION as TBG_DUR, FPS as TBG_FPS } from "./ThomasBg/data";
+import {
+  ThomasBrollReel,
+  calculateThomasBrollMetadata,
+  thomasBrollDefaults,
+} from "./ThomasBroll/ThomasBrollReel";
 
 const CLONIFY_FPS = 30;
 const CLONIFY_DURATION = Math.round(12.5 * CLONIFY_FPS);
@@ -1966,6 +1971,17 @@ export const RemotionRoot: React.FC = () => {
         component={ThomasBackground}
         durationInFrames={Math.round(TBG_DUR * TBG_FPS)}
         fps={TBG_FPS}
+        width={1080}
+        height={1920}
+      />
+      {/* Thomas b-roll reel: data-driven, pass the job's edit.json with --props */}
+      <Composition
+        id="ThomasBrollReel"
+        component={ThomasBrollReel}
+        defaultProps={thomasBrollDefaults}
+        calculateMetadata={calculateThomasBrollMetadata}
+        durationInFrames={250}
+        fps={25}
         width={1080}
         height={1920}
       />
