@@ -8,8 +8,9 @@ dst="$HOME/.claude/skills"
 mkdir -p "$dst"
 for d in "$src"/*/; do
   name="$(basename "$d")"
-  rm -rf "$dst/$name"
-  cp -R "$d" "$dst/$name"
+  rm -rf "$dst/$name" 2>/dev/null || true
+  mkdir -p "$dst/$name"
+  cp -R "$d"/. "$dst/$name"/
   find "$dst/$name" -name "__pycache__" -type d -prune -exec rm -rf {} +
   echo "installed $name"
 done

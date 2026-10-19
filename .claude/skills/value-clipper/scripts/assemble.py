@@ -79,22 +79,47 @@ def snap_cut(t, pauses, start, track=None):
 
 
 def windows(plan, pauses, track=None, sets=()):
-    rem = sorted(plan.get("remove", []))
+    """Edges are tagged by origin: "block" (rough, from the transcript), "cut" (a removal fillers.py
+    placed exactly) or "gap" (dead air being tightened: already inside silence, used as is)."""
+    rem = [(x, y, "cut") for x, y in plan.get("remove", [])]
+    tight = plan.get("tighten")              # e.g. 0.4: shorten any pause longer than this to 0.3s
+    if tight:
+        for s, e, m in pauses:
+            if e - s > tight and not any(x - 0.05 <= s and e <= y + 0.05 for x, y, _ in rem):
+                rem.append((s + 0.15, e - 0.15, "gap"))   # a tutor writing on the board: 2-4s of dead air
+    rem.sort()
+    merged = []
+    for x, y, k in rem:                      # overlapping removals merge; the outer edges keep their kind
+        if merged and x <= merged[-1][1]:
+            px, py, pk = merged[-1]
+            merged[-1] = (px, max(py, y), pk if py >= y else k)
+        else:
+            merged.append((x, y, k))
+    snap = {"block": snap_block, "cut": snap_cut, "gap": lambda t, *a: (t, "pause")}
     out = []
     for bi, b in enumerate(plan["blocks"]):
-        pieces, cur, cur_is_block = [], b["from"], True
-        for x, y in rem:
+        pieces, cur, cur_kind = [], b["from"], "block"
+        for x, y, k in merged:
             if b["from"] < x < b["to"]:
-                pieces.append((cur, cur_is_block, x, False)); cur, cur_is_block = max(cur, y), False
-        pieces.append((cur, cur_is_block, b["to"], True))
-        for s, s_block, e, e_block in pieces:
-            ss, k1 = (snap_block if s_block else snap_cut)(s, pauses, True, track)
-            ee, k2 = (snap_block if e_block else snap_cut)(e, pauses, False, track)
+                pieces.append((cur, cur_kind, x, k)); cur, cur_kind = max(cur, y), k
+        pieces.append((cur, cur_kind, b["to"], "block"))
+        for s, s_kind, e, e_kind in pieces:
+            ss, k1 = snap[s_kind](s, pauses, True, track)
+            ee, k2 = snap[e_kind](e, pauses, False, track)
             if ee - ss > 0.15:
                 out.append({"block": bi, "s": round(ss, 3), "e": round(ee, 3), "ok_start": k1 != "none", "ok_end": k2 != "none",
                             "how": (k1, k2),
                             "note": b.get("note", ""), "why": b.get("why", "")})
     return out
+
+
+def no_overlap(wins):
+    """Neighbouring windows that both snapped outward can overlap in the source and replay ~0.2s
+    twice. Where one window continues straight on from the last, start it where the last ended."""
+    for a, b in zip(wins, wins[1:]):
+        if a["s"] < b["s"] < a["e"]:
+            b["s"] = a["e"]
+    return [w for w in wins if w["e"] - w["s"] > 0.15]
 
 
 def moved_blocks(plan):
@@ -129,7 +154,9 @@ def load_word_sets(dirs):
 def text_of(sets, s, e):
     cover = [x for x in sets if x[0] <= s + 1.0 and x[1] >= e - 1.0] or sets
     ws = min(cover, key=lambda x: x[1] - x[0])[2] if cover else []
-    return " ".join(w["w"] for w in ws if s <= (w["s"] + w["e"]) / 2 < e)
+    # by START time: Whisper stretches a word's END into the silence after it, so a midpoint can
+    # land in a tightened gap and the word vanishes from the read-back although it's in the audio
+    return " ".join(w["w"] for w in ws if s - 0.05 <= w["s"] < e - 0.05)
 
 
 def render(src, wins, out):
@@ -166,7 +193,7 @@ def main():
     if not pauses:
         sys.exit("no pauses.json found: run pauses.py on every region the plan uses")
     from audio import Track
-    wins = windows(plan, pauses, Track(plan["source"]), words)
+    wins = no_overlap(windows(plan, pauses, Track(plan["source"]), words))
     total = sum(w["e"] - w["s"] for w in wins)
     print(f"{plan.get('name', '')}  [{plan.get('version', 'in-order')}]  {len(wins)} windows, {total:.1f}s\n")
     moved, prev_block = moved_blocks(plan), None

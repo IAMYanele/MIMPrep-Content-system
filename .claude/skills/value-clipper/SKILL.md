@@ -95,6 +95,10 @@ Write the plan (`<job>/plan_in_order.json`):
  "remove": [[15.34, 19.26], [86.02, 88.43]]}
 ```
 
+**Dead air** (a tutor writing on the board, someone thinking): add `"tighten": 0.4` to the
+plan and every pause longer than 0.4s inside a block is cut down to 0.3s, entirely inside
+the silence. Class recordings need this: the GRE class had 2-10s pauses mid-sentence.
+
 Dry run, then read it aloud:
 
 ```bash
@@ -143,6 +147,19 @@ with 20ms fades at joins, -14 LUFS, a clean-decode check, and a re-transcription
 finished file printed for read-back. **Read that read-back.** It's what the viewer hears.
 It caught the "experience" leaking into a block's start and the "outside of London"
 stumble in testing. Back up any delivered clip before overwriting it.
+
+## Sources other than a local file
+
+- **Fathom share links**: the Fathom connector can't open other people's shares, but the
+  share page is public. Its page data has the full transcript with speaker names and
+  timestamps (`copyTranscriptUrl`), which is enough for Level 1 without any video. The
+  video is an HLS stream at `<share url>/video.m3u8`. When `canDownload` is false, ask
+  before pulling anything, then pull ONLY the approved minutes:
+  `ffmpeg -ss <start> -i "<share>/video.m3u8" -t <len> -c copy seg.mp4`. Treat each
+  downloaded segment as its own raw file (it starts on a keyframe, not exactly at
+  `<start>`).
+- Screen-share recordings (a tutor's iPad) usually show no faces, but the student's voice
+  is still there. Flag it.
 
 ## Deliver
 

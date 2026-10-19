@@ -29,6 +29,23 @@ def slices_db(src, start, end, step=0.25):
     return np.array(vals) if vals else np.array([-60.0])
 
 
+def otsu(db):
+    """Threshold that best separates the loud (speech) and quiet (silence) slices."""
+    v = np.clip(db, -100, 0)
+    hist, edges = np.histogram(v, bins=100, range=(-100, 0))
+    mids = (edges[:-1] + edges[1:]) / 2
+    best, thr = -1.0, -40.0
+    for k in range(1, 100):
+        w0, w1 = hist[:k].sum(), hist[k:].sum()
+        if w0 == 0 or w1 == 0:
+            continue
+        m0 = (hist[:k] * mids[:k]).sum() / w0; m1 = (hist[k:] * mids[k:]).sum() / w1
+        between = w0 * w1 * (m0 - m1) ** 2
+        if between > best:
+            best, thr = between, edges[k]
+    return float(thr)
+
+
 def silences(src, start, end, noise, d):
     p = subprocess.run(["ffmpeg", "-hide_banner", "-ss", f"{start:.3f}", "-t", f"{end - start:.3f}", "-i", src, "-vn",
                         "-af", f"silencedetect=noise={noise:.1f}dB:d={d}", "-f", "null", "-"], capture_output=True, text=True).stderr
@@ -53,7 +70,13 @@ def main():
                                         capture_output=True, text=True).stdout.strip())
     db = slices_db(a.src, a.start, end)
     speech_peak = float(np.percentile(db, 90))
-    noise = a.noise if a.noise is not None else min(-30.0, speech_peak - 11)
+    floor = float(np.percentile(db, 10))
+    # Split the loudness of 0.25s slices into its two natural groups, speech and silence (Otsu),
+    # and never set the line within 11dB of speech. A fixed "speech minus 11dB" called a soft,
+    # trailing "the" and "a" silence on a class recording (soft words 20-30dB under speech, real
+    # silence 40+ under), so tightening cut them; a fixed offset from the floor missed real pauses
+    # in a noisier room. The split adapts to both.
+    noise = a.noise if a.noise is not None else min(speech_peak - 11, otsu(db))
     pauses = [(s, e, (s + e) / 2) for s, e in silences(a.src, a.start, end, noise, a.min)]
 
     suspect = []
@@ -76,10 +99,11 @@ def main():
                 suspect.append({"from": round(x, 2), "to": round(y, 2), "words": nw, "bursts": nb})
 
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
-    json.dump({"src": a.src, "start": a.start, "end": end, "speech_peak_db": round(speech_peak, 1), "noise_db": round(noise, 1),
+    json.dump({"src": a.src, "start": a.start, "end": end, "speech_peak_db": round(speech_peak, 1), "floor_db": round(floor, 1),
+               "noise_db": round(noise, 1),
                "pauses": [[round(s, 3), round(e, 3), round(m, 3)] for s, e, m in pauses], "suspect": suspect},
               open(out / "pauses.json", "w"), indent=1)
-    print(f"speech peaks ~{speech_peak:.1f} dB -> silence threshold {noise:.1f} dB, {len(pauses)} pauses >= {a.min}s")
+    print(f"speech peaks ~{speech_peak:.1f} dB, floor {floor:.1f} dB -> silence threshold {noise:.1f} dB, {len(pauses)} pauses >= {a.min}s")
     for s in suspect:
         print(f"  check {s['from']:.2f}-{s['to']:.2f}: {s['bursts']} speech bursts vs {s['words']} words "
               f"(likely a false start or repeat Whisper merged)")

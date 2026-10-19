@@ -28,7 +28,9 @@ from pathlib import Path
 from audio import Track
 
 ONE = {"um", "uh", "uhm", "umm", "uhh", "ah", "er", "erm", "hmm", "mm", "mhm"}
-MULTI = [("you", "know"), ("i", "mean"), ("sort", "of"), ("kind", "of"), ("so", "yeah"), ("you", "see")]
+MULTI = [("you", "know"), ("i", "mean"), ("so", "yeah"), ("you", "see")]
+SOFT_MULTI = [("sort", "of"), ("kind", "of")]          # "this kind of question" is content: judge by ear
+NUMBERS = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"}
 SOFT = {"basically", "literally", "actually", "like"}
 CONNECT = {"so", "and", "but", "then", "like", "or"}
 STOP = {"the", "a", "to", "of", "and", "in", "you", "i", "it", "is", "be", "for", "that", "so", "on"}
@@ -69,6 +71,8 @@ def main():
         s_cut, k1 = edge((words[i - 1]["e"] + words[i]["s"]) / 2 if i else words[i]["s"] - 0.05, True)
         e_cut, k2 = edge((words[j]["e"] + words[j + 1]["s"]) / 2 if j + 1 < len(words) else words[j]["e"] + 0.05, False)
         grade = "HARD" if "HARD" in (k1, k2) else ("DIP" if "DIP" in (k1, k2) else "PAUSE")
+        if e_cut - s_cut < 0.08:
+            return                                    # both edges landed in the same pause: nothing to cut
         found.append({"kind": kind, "text": " ".join(w["w"] for w in words[i:j + 1]), "at": round(words[i]["s"], 2),
                       "cut": [round(s_cut, 3), round(e_cut, 3)], "grade": grade, "note": note})
 
@@ -87,7 +91,15 @@ def main():
             add("filler", i, i); i += 1; continue
         hit = next((p for p in MULTI if tuple(n[i:i + len(p)]) == p), None)
         if hit:
-            add("filler", i, i + len(hit) - 1); i += len(hit); continue
+            j = i + len(hit) - 1
+            # a filler phrase is set off by a comma or a pause ("you know, the LinkedIn");
+            # "because you know what it measures" is a sentence, not a filler
+            gap_after = words[j + 1]["s"] - words[j]["e"] if j + 1 < len(words) else 1.0
+            if re.search(r"[,.?!]$", words[j]["w"]) or gap_after >= 0.15:
+                add("filler", i, j); i += len(hit); continue
+        hit = next((p for p in SOFT_MULTI if tuple(n[i:i + len(p)]) == p), None)
+        if hit:
+            add("soft", i, i + len(hit) - 1, "only if it carries no meaning"); i += len(hit); continue
         if n[i] in SOFT:
             add("soft", i, i, "only if it carries no meaning")
         done = False
@@ -95,6 +107,8 @@ def main():
             if i + 2 * k <= len(n) and n[i:i + k] == n[i + k:i + 2 * k] and any(len(x) > 1 for x in n[i:i + k]):
                 if k == 1 and n[i] in {"that", "had", "very", "really", "no", "so"}:
                     continue
+                if all(x in NUMBERS or x.isdigit() for x in n[i:i + k]):
+                    continue                          # "nine, nine and six, six" is the data, not a stutter
                 add("repeat", i, i + k - 1, "said twice, keep the second"); i += k; done = True; break
         if done:
             continue
@@ -120,19 +134,45 @@ def main():
                     m = WhisperModel(name, device="cpu", compute_type="int8", local_files_only=True); break
                 except Exception:
                     continue
+            # One transcription for ALL bursts: each burst (with 0.12s either side) is laid end to end
+            # with 1s of silence between, transcribed once, and words are mapped back by time.
+            # One call per burst took 10+ minutes on a 7-minute segment.
+            import numpy as np, wave
+            t0 = words[0]["s"] - 1.0
+            raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0, t0):.3f}", "-t", f"{words[-1]['e'] - t0 + 2:.3f}",
+                                  "-i", a.src, "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True).stdout
+            pcm = np.frombuffer(raw, np.int16)
+            sil = np.zeros(16000, np.int16)
+            parts, spans, pos = [], [], 0.0
             for rs, re_ in gaps:
-                tmp = Path(tempfile.gettempdir()) / f"burst_{os.getpid()}.wav"
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{rs - 0.15:.3f}", "-t", f"{re_ - rs + 0.3:.3f}", "-i", a.src,
-                                "-vn", "-ac", "1", "-ar", "16000", "-af", "apad=pad_dur=0.5", str(tmp)], check=True)
-                segs, _ = m.transcribe(str(tmp), language="en", vad_filter=False,
-                                       initial_prompt="Umm, uh, hmm, er, ah. So, uh, um.")
-                heard = " ".join(s.text for s in segs).strip()
-                tmp.unlink(missing_ok=True)
+                i, j = int((rs - 0.12 - max(0, t0)) * 16000), int((re_ + 0.12 - max(0, t0)) * 16000)
+                chunk = pcm[max(0, i):max(0, j)]
+                spans.append((pos, pos + len(chunk) / 16000))
+                parts += [chunk, sil]; pos += len(chunk) / 16000 + 1.0
+            tmp = Path(tempfile.gettempdir()) / f"bursts_{os.getpid()}.wav"
+            with wave.open(str(tmp), "wb") as wf:
+                wf.setnchannels(1); wf.setsampwidth(2); wf.setframerate(16000)
+                wf.writeframes(np.concatenate(parts).tobytes())
+            segs, _ = m.transcribe(str(tmp), language="en", vad_filter=False, word_timestamps=True,
+                                   initial_prompt="Umm, uh, hmm, er, ah. So, uh, um.")
+            heard_by = [[] for _ in gaps]
+            for sg in segs:
+                for w in sg.words:
+                    mid = (w.start + w.end) / 2
+                    k = next((n for n, (p0, p1) in enumerate(spans) if p0 - 0.3 <= mid <= p1 + 0.3), None)
+                    if k is not None:
+                        heard_by[k].append(w.word.strip())
+            tmp.unlink(missing_ok=True)
+            for (rs, re_), hw in zip(gaps, heard_by):
+                heard = " ".join(hw).strip()
                 h = [norm(x) for x in heard.split() if norm(x)]
-                if not h or all(x in ONE for x in h):
+                if h and all(x in ONE for x in h):   # heard as um/uh/ah: a wordless burst is usually a breath
+                                                    # or the tail of a word Whisper timed short, so it doesn't count
                     s_cut, k1 = edge(rs, True); e_cut, k2 = edge(re_, False)
                     grade = "HARD" if "HARD" in (k1, k2) else ("DIP" if "DIP" in (k1, k2) else "PAUSE")
-                    hidden.append({"kind": "hidden", "text": heard or "(voiced, no words)", "at": round(rs, 2),
+                    if e_cut - s_cut < 0.08:
+                        continue
+                    hidden.append({"kind": "hidden", "text": heard, "at": round(rs, 2),
                                    "cut": [round(s_cut, 3), round(e_cut, 3)], "grade": grade,
                                    "note": "um/uh Whisper left out of the transcript"})
     found = sorted(found + hidden, key=lambda f: f["at"])

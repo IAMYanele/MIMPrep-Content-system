@@ -18,7 +18,12 @@ became "the most professional". So:
 
 ## Calibrate the silence threshold
 
-`pauses.py` measures the speaker's level and sets the threshold ~11dB under their speech.
+`pauses.py` splits each recording's loudness into its two natural groups (speech and
+silence, Otsu's method) and never puts the line within 11dB of speech. Two failures drove
+this: on a GRE class, "speech minus 11dB" called the tutor's soft trailing "the" and "a"
+silence (soft words sat 20-30dB under speech, real silence 40+), so tightening would have
+cut them; and that threshold also put a false "pause" inside "hyper|link". A fixed offset
+from the room's floor missed real pauses in a noisier room. Earlier, with a fixed number:
 A remembered `-30dB` once sat above a soft speaker's quiet passages and called 3.2s of real
 speech "dead air", which nearly deleted a sentence. Real silence reads -60 to -83dB; soft
 speech still moves across 0.25s slices. If consecutive slices move, it's speech.
@@ -42,6 +47,10 @@ sent back.
   inside a word.
 - Take the connector with an abandoned start ("so make it clippable, that"), and when a
   sentence is said two or three ways, keep only the clearest version.
+- Not every flagged phrase is a filler: "nine, nine and six, six" is the data, "this kind of
+  question" and "because you know what it measures" are content. A filler phrase is set off
+  by a comma or a pause; fillers.py now applies that, and wordless voiced bursts (breaths,
+  word tails) are not reported, only bursts actually heard as um/uh/ah.
 - Check what a removal takes with it. A cut that started one pause too early once deleted
   "contact you" along with the restart it was meant to remove. The dry-run read-back
   catches this.

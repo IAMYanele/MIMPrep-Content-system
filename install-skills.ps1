@@ -12,8 +12,11 @@ New-Item -ItemType Directory -Force $dst | Out-Null
 
 Get-ChildItem $src -Directory | ForEach-Object {
     $target = Join-Path $dst $_.Name
-    if (Test-Path $target) { Remove-Item -Recurse -Force $target }
-    Copy-Item -Recurse $_.FullName $target
+    # Remove the old copy; if a running script holds a file open, copy over it in place instead.
+    # (Copying a folder onto an existing one would nest it: <skill>\<skill>\...)
+    if (Test-Path $target) { Remove-Item -Recurse -Force $target -ErrorAction SilentlyContinue }
+    New-Item -ItemType Directory -Force $target | Out-Null
+    Copy-Item -Recurse -Force (Join-Path $_.FullName '*') $target
     Get-ChildItem $target -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force
     Write-Host "installed $($_.Name)"
 }
