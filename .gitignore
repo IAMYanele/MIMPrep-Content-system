@@ -15,3 +15,6 @@ build/
 .api-cache/
 .yt-client-secret.json
 .yt-token.json
+
+# tutor credential pills hold names and credentials; this repo is public (see the pills README)
+.claude/skills/zoom-session-reel/assets/pills/*.png

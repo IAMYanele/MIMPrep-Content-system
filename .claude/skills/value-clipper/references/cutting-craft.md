@@ -58,6 +58,20 @@ sent back.
   last word finish (snap to the next pause): a dip-cut at a transcript time clipped
   "space". Only removal edges, already placed exactly, cut at dips.
 
+## When Whisper's timing can't be trusted
+
+Long-region transcripts drift on accented or slow speech. On a Fathom GMAT session, words
+were stamped up to 2.8s off and hesitations hid inside stretched words ("work" 111.4 ->
+114.1 was really "is, um, so, work"). Signs: a word longer than ~0.75s, or more voiced
+runs between two words than the words explain. When you see them, re-transcribe the
+segment with `chunk_words.py` (<=9s chunks cut in pauses) and plan with `keeps.py`, which
+puts every edge on the measured audio. Profile any edge it flags as shallow (print the
+10ms dB values across the gap) and override it by hand.
+
+**One pause map per source file.** Passing two recordings' `pauses.json` to one plan
+applied the other file's silences to this one, and "tighten" quietly deleted "in verbal"
+from the start of a clip.
+
 ## Joins and order (Level 3)
 
 - End each block on a completed clause, never a dangling "because..." (a CV 08 window ended
@@ -70,8 +84,12 @@ sent back.
 
 ## Rendering and verifying
 
-- Frame-accurate `trim`/`atrim` per window, 20ms audio fades at every join, `concat`,
-  original resolution and frame rate. Stream copy is not frame-accurate.
+- Frame-accurate `trim` per window with hard video cuts, original resolution and frame
+  rate. Stream copy is not frame-accurate.
+- Audio **crossfades** across every join (60ms where both sides sit in silence, 30ms at an
+  energy dip), centred on the cut so it stays in sync with the video. Fading each side to
+  zero, the old way, left a little hole in the room tone at every join, and with 20+ joins
+  the GMAT clips were sent back as "rough and abrupt".
 - ffmpeg 9 removed `-vsync`: use `-fps_mode cfr`. Never grep ffmpeg's stderr away when
   checking a render.
 - Loudness: two-pass `loudnorm` to -14 LUFS. The 16:9 CV clips once sat at -36 LUFS

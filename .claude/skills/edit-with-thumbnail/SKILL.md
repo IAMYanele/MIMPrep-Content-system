@@ -1,6 +1,6 @@
 ---
 name: edit-with-thumbnail
-description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, thomas-broll-reel, mim-reel-edit and thomas-reel-cover.
+description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, zoom-session-reel, thomas-broll-reel, mim-reel-edit and thomas-reel-cover.
 ---
 
 # Edit with thumbnail
@@ -25,7 +25,7 @@ Work out, from the request and the files:
 | | |
 |---|---|
 | **Video** | the file being edited, and its RAW source if different (4K raws make better covers) |
-| **Edit skill** | `cv-review-vertical`, `thomas-broll-reel`, `mim-reel-edit`, or none |
+| **Edit skill** | `cv-review-vertical`, `zoom-session-reel` (GMAT sessions, consultation calls), `thomas-broll-reel`, `mim-reel-edit`, or none |
 | **Page** | Thomas's page (@thomas_d_c) uses `thomas-reel-cover`. For MiM Prep page posts, see "MiM Prep page" below |
 | **Transcript** | any existing one (captions JSON, `words.json`, `transcript.txt`, `cv-work/captions/`) |
 | **Cover job folder** | `<covers root>/<slug>/`. On Yanele's PC: `F:\thomas b-roll\<slug>\` |
@@ -42,7 +42,7 @@ Video: <path to the video being edited>
 Raw footage of the same shoot: <path(s), or "none">
 What it's about: <one line, or "read the transcript">
 Transcript: <path, or "none yet - transcribe the source audio yourself with faster-whisper base.en, only to understand the topic">
-Series / context: <e.g. "CV review, Thomas's studio, no student name or CV on the cover">
+Series / context: <e.g. "CV review, Thomas's studio, no student name or CV on the cover", or "GMAT session reel: tutor only, never the student, not even blurred">
 Job folder: <covers root>/<slug>/
 Photo library: F:\thomas pics, F:\thomas content\b-roll stills (and the shared Drive photo folder if synced)
 

@@ -116,6 +116,34 @@ Edges are handled two ways:
 An edge flagged "no pause or dip" needs a listen. Check what each removal takes with it:
 one cut that started a pause too early also deleted "contact you".
 
+### The precise path: chunked words + keeps (Zoom and Fathom sessions, accented speech)
+
+Use this whenever the segment transcript looks off: words longer than ~0.75s, ums you can
+hear but can't see, or a dry run whose text doesn't match the audio. It's the default for
+Zoom/Fathom tutoring sessions and consultation calls. On the first GMAT session, word times
+were up to 2.8s off, and the first cuts came back "rough and abrupt", with ums left in.
+
+```bash
+python $SKILL/scripts/pauses.py "<raw>" --out <job>/segA --start 15 --end 111 --min 0.12
+python $SKILL/scripts/chunk_words.py "<raw>" --pauses <job>/segA --start 15 --end 111 --out <job>/segA_c
+python $SKILL/scripts/keeps.py <job>/spec_segA.json          # writes the plan + <plan>.expected.json
+python $SKILL/scripts/assemble.py <job>/plan_segA.json --pauses <job>/segA --words <job>/segA_c   # dry run
+```
+
+The spec lists the words to KEEP by index (`keeps.py` documents the format). Every gap
+between kept ranges becomes a removal with edges on the measured audio, and the plan is
+marked `exact_edges` so `assemble.py` leaves them alone. For any edge `keeps.py` flags as
+shallow, print the 10ms dB values across the gap and set the edge by hand (`override`).
+Spell-fix caption words in `<job>/segA_c/words_fixed.json` (same indices) before running
+`keeps.py`.
+
+Rules from that run:
+- **Pass only this file's own `pauses.json`.** Mixing two recordings' pause maps deleted
+  "in verbal" from a clip.
+- **Reinstall after editing the skill.** The renders run the installed copy, not the repo.
+- A word fused to the next with no gap ("and so you do it", "do like 10") stays. Name it in
+  the delivery notes rather than cutting inside a word.
+
 ## Level 3: rearrange, when it helps
 
 Always deliver the **in-order** version. Then ask: would a different order make this
@@ -143,8 +171,9 @@ python $SKILL/scripts/assemble.py <job>/plan_rearranged.json <same> --render --o
 ```
 
 One at a time, never in parallel. Each render is frame-accurate at original resolution,
-with 20ms fades at joins, -14 LUFS, a clean-decode check, and a re-transcription of the
-finished file printed for read-back. **Read that read-back.** It's what the viewer hears.
+with audio crossfaded across every join, -14 LUFS, a clean-decode check, and a
+re-transcription of the finished file, printed for read-back and saved as
+`<name>.heard.json` (zoom-session-reel times its captions from it). **Read that read-back.** It's what the viewer hears.
 It caught the "experience" leaking into a block's start and the "outside of London"
 stumble in testing. Back up any delivered clip before overwriting it.
 
@@ -167,6 +196,8 @@ For each clip: path, length, the main point, what was removed (a line per remova
 and for a rearranged version a short table of what moved and why. Repeat any privacy
 flags. Then **stop at the clips** and offer the next step:
 - CV review: the `cv-review-vertical` skill builds the 9:16 split-screen.
+- GMAT session or consultation call recorded on Zoom/Fathom: `zoom-session-reel` builds
+  the 9:16 tutor-over-student reel (student mosaicked/blurred, captions, title card).
 - Interview / podcast in Thomas's ad style: `thomas-broll-reel`.
 - Anything else: a reel edit.
 

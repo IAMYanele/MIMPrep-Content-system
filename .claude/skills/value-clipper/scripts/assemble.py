@@ -250,8 +250,11 @@ def main():
     vdir = Path(tempfile.gettempdir()) / f"vc_verify_{os.getpid()}"
     subprocess.run([sys.executable, str(Path(__file__).with_name("transcribe.py")), a.out, "--out", str(vdir), "--local"],
                    check=True, capture_output=True)
+    heard = json.load(open(vdir / "words.json", encoding="utf-8"))
+    # kept next to the clip: zoom-session-reel times its captions from these (output time)
+    json.dump(heard, open(Path(a.out).with_suffix(".heard.json"), "w", encoding="utf-8"), indent=0)
     print("\nwhat the rendered file actually says (re-transcribed):")
-    print(" ".join(w["w"] for w in json.load(open(vdir / "words.json", encoding="utf-8"))))
+    print(" ".join(w["w"] for w in heard))
 
 
 if __name__ == "__main__":
