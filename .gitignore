@@ -18,3 +18,7 @@ build/
 
 # tutor credential pills hold names and credentials; this repo is public (see the pills README)
 .claude/skills/zoom-session-reel/assets/pills/*.png
+
+# mimprep-cover: creator footage links and photos of the creators stay local (public repo)
+.claude/skills/mimprep-cover/references/*.local.*
+.claude/skills/mimprep-cover/references/*.jpg

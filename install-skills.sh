@@ -16,6 +16,6 @@ for d in "$src"/*/; do
 done
 echo
 echo "Also needed once per machine:"
-echo "  pip install numpy opencv-python pillow pillow-heif requests faster-whisper google-genai rembg"
+echo "  pip install numpy opencv-python pillow pillow-heif requests faster-whisper google-genai rembg pymatting"
 echo "  ffmpeg + ffprobe on PATH; Helvetica Now Text Medium installed (cover font)"
 echo "  GEMINI_API_KEY (covers) and OPENAI_API_KEY (transcription) - see each SKILL.md"

@@ -23,6 +23,6 @@ Get-ChildItem $src -Directory | ForEach-Object {
 
 Write-Host ""
 Write-Host "Done. Also needed once per machine:"
-Write-Host "  pip install numpy opencv-python pillow pillow-heif requests faster-whisper google-genai rembg"
+Write-Host "  pip install numpy opencv-python pillow pillow-heif requests faster-whisper google-genai rembg pymatting"
 Write-Host "  ffmpeg + ffprobe on PATH; Helvetica Now Text Medium installed (cover font)"
 Write-Host "  GEMINI_API_KEY (covers) and OPENAI_API_KEY (transcription) - see each SKILL.md"

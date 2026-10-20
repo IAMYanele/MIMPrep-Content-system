@@ -1,6 +1,6 @@
 ---
 name: edit-with-thumbnail
-description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, zoom-session-reel, thomas-broll-reel, mim-reel-edit and thomas-reel-cover.
+description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, zoom-session-reel, thomas-broll-reel, mim-reel-edit, thomas-reel-cover and mimprep-cover.
 ---
 
 # Edit with thumbnail
@@ -107,7 +107,7 @@ like this? It cheapens the brand so much."
 Posts for the MiM Prep account (Margot, Manuel or Ali CV reviews, GMAT-session clips,
 consultation clips) are a different brand. Thomas wants them in **MiM Prep's own
 palette**, one blue matched exactly, aligned with the website and distinct from his
-personal page, and never with heavily edited faces. There is no locked MiM Prep cover
-template yet. Until there is, tell the user and ask whether to use
-`thomas-reel-cover`'s workflow (real image, text-only Nano Banana, 3 options) with the
-MiM palette swapped in, rather than his dark cream look.
+personal page, and never with heavily edited faces. Use the **`mimprep-cover`** skill
+for these. It has the approved template, locked 2026-10-20: a UGC girl cut out of her real
+clip, on MiM paper with an arch, a circle, or a high-end background photo, and a
+Poppins headline in #004AAD.

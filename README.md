@@ -22,6 +22,7 @@ powershell -ExecutionPolicy Bypass -File install-skills.ps1     # Windows
 | `cv-review-vertical` | CV review footage to sub-1:15 clips and 9:16 split-screen verticals (reviewer on top, blurred CV scrolling below), plus the privacy and consent checks. |
 | `thomas-broll-reel` | The "Talk about your background" ad style: vertical reframe per camera shot, white-pill captions, ~2s cutaways of Thomas's own b-roll. Uses the `ThomasBrollReel` Remotion comp. |
 | `thomas-reel-cover` | @thomas_d_c reel covers: real photo or frame, dark editorial grade, Helvetica Now headline. Nano Banana adds the text only. 3 options and a grid preview. |
+| `mimprep-cover` | MiM Prep page covers in the MiM brand (paper and dot grid, #004AAD, Poppins headline, serif kicker, blue pill) with a UGC creator cut out of her real clip, on an approved arch, circle or high-end background photo. Faces are never altered. The creators' Drive folder links and photos are kept local, not in this public repo. |
 
 Each skill's `SKILL.md` lists what it needs (ffmpeg, Python packages, fonts, API keys) and
 the rules that came from feedback on real deliverables. Edit skills here in the repo, not

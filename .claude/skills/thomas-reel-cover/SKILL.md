@@ -1,6 +1,6 @@
 ---
 name: thomas-reel-cover
-description: Make the Instagram reel cover / thumbnail for a video on Thomas's own page (@thomas_d_c) - the dark "Forbes magazine" look with a real photo or video frame of Thomas, a small tracked kicker over a big Helvetica Now headline in ALL CAPS, the big word tucked behind his hair. Finds the best source image (the video's own raw footage, the b-roll stills, or Thomas's photo library), writes click-worthy hooks, mocks them on the real cover, has Nano Banana add ONLY the lettering, and delivers 3 options plus a grid preview. Use for any "thumbnail", "cover", "reel cover" or "cover image" for Thomas's page, CV review covers, or when the edit-with-thumbnail skill hands off a video. Not for the MiM Prep page (different brand, see the note inside) or YouTube 16:9 thumbnails (mim-thumbnail).
+description: Make the Instagram reel cover / thumbnail for a video on Thomas's own page (@thomas_d_c) - the dark "Forbes magazine" look with a real photo or video frame of Thomas, a small tracked kicker over a big Helvetica Now headline in ALL CAPS, the big word tucked behind his hair. Finds the best source image (the video's own raw footage, the b-roll stills, or Thomas's photo library), writes click-worthy hooks, mocks them on the real cover, has Nano Banana add ONLY the lettering, and delivers 3 options plus a grid preview. Use for any "thumbnail", "cover", "reel cover" or "cover image" for Thomas's page, CV review covers, or when the edit-with-thumbnail skill hands off a video. Not for the MiM Prep page (use mimprep-cover) or YouTube 16:9 thumbnails (mim-thumbnail).
 ---
 
 # Thomas reel cover
@@ -175,5 +175,6 @@ publishing (see the cv-review-vertical skill's privacy section).
 On 2026-10-19 Thomas asked for the MiM Prep page covers to use **MiM Prep's own colour
 palette** (one blue, matched exactly), to stay distinct from his personal page while
 staying aligned with the website, and never to use heavily edited faces. Don't put this
-dark cream-on-black look on MiM Prep posts. On Yanele's PC the brand colours are in
+dark cream-on-black look on MiM Prep posts. MiM Prep page covers use the
+**`mimprep-cover`** skill instead. On Yanele's PC the brand colours are in
 `Documents\ai.agents\workflow-agents\mim-creative-studio\studio\src\brand.ts`.
