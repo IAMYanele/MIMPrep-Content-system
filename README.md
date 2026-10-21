@@ -14,6 +14,19 @@ powershell -ExecutionPolicy Bypass -File install-skills.ps1     # Windows
 ./install-skills.sh                                              # macOS / Linux / Git Bash
 ```
 
+The two reel engines (`business-short-form-reels`, `ranking-format`) keep no font files
+here, and install-skills replaces each skill folder wholesale. After installing them, run
+their setup once so the brand profile and the fonts are put back:
+
+```bash
+python ~/.claude/skills/business-short-form-reels/setup/apply_profile.py
+python ~/.claude/skills/ranking-format/setup/apply_profile.py
+```
+
+That reads `~/.claude/creator-profile/` (accent, fonts, handle) and fills every
+placeholder. Helvetica Now Text Medium must already be in
+`~/.claude/creator-profile/assets/fonts/`.
+
 | Skill | What it does |
 |---|---|
 | `edit-with-thumbnail` | The coordinator. Whenever a video edit starts, it launches the cover in the background so the edit and 3 cover options arrive together. |
