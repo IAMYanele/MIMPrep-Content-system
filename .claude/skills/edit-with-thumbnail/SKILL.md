@@ -1,6 +1,6 @@
 ---
 name: edit-with-thumbnail
-description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, zoom-session-reel, thomas-broll-reel, mim-reel-edit, thomas-reel-cover and mimprep-cover.
+description: Coordinator for every video edit for Thomas / MiM Prep. The moment someone starts editing a video in Claude (a CV review, an interview or b-roll reel, a talking-head clip, an ad, a batch of clips), launch the thumbnail/cover for that video as a background job so it is made in parallel with the edit, then hand the finished edit and three cover options over together. Covers come from the video's own footage or, when that isn't cover quality, from the high-quality photo library. Use whenever a video edit begins or is requested ("edit this video", "cut this", "make the reels", "edit this reel", "tier list", "ranking video", "edit the CV reviews", "make this in the background style"), even if nobody mentions a thumbnail. Works alongside cv-review-vertical, zoom-session-reel, thomas-broll-reel, mim-reel-edit and the two reel engines it drives (business-short-form-reels, ranking-format), plus thomas-reel-cover and mimprep-cover.
 ---
 
 # Edit with thumbnail
@@ -25,7 +25,7 @@ Work out, from the request and the files:
 | | |
 |---|---|
 | **Video** | the file being edited, and its RAW source if different (4K raws make better covers) |
-| **Edit skill** | `cv-review-vertical`, `zoom-session-reel` (GMAT sessions, consultation calls), `thomas-broll-reel`, `mim-reel-edit`, or none |
+| **Edit skill** | `cv-review-vertical`, `zoom-session-reel` (GMAT sessions, consultation calls), `thomas-broll-reel`, `mim-reel-edit` (which drives `business-short-form-reels` for graphics reels and `ranking-format` for tier lists), or none |
 | **Page** | Thomas's page (@thomas_d_c) uses `thomas-reel-cover`. For MiM Prep page posts, see "MiM Prep page" below |
 | **Transcript** | any existing one (captions JSON, `words.json`, `transcript.txt`, `cv-work/captions/`) |
 | **Cover job folder** | `<covers root>/<slug>/`. On Yanele's PC: `F:\thomas b-roll\<slug>\` |

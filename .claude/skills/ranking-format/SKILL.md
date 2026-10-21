@@ -5,6 +5,13 @@ description: The ranking format - turn a talking-head video where someone RANKS 
 
 # Ranking format (tier-list reel)
 
+## MiM Prep: start the cover before you edit
+
+On Thomas / MiM Prep work this skill is driven by `mim-reel-edit`, and no edit ships
+without its cover. **Before the first edit step, load `edit-with-thumbnail` and launch its
+background cover job, then come straight back here.** Do not wait for it and do not finish
+an edit without it: the finished reel and three cover options are handed over together.
+
 ## Step 0: setup gate (every session, before anything else)
 
 Run `python3 ~/.claude/skills/ranking-format/setup/apply_profile.py --status`.

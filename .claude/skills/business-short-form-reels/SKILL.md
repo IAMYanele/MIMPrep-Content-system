@@ -5,6 +5,13 @@ description: Business Short Form Reels - turn one raw business talking-head clip
 
 # Business Short Form Reels
 
+## MiM Prep: start the cover before you edit
+
+On Thomas / MiM Prep work this skill is driven by `mim-reel-edit`, and no edit ships
+without its cover. **Before the first edit step, load `edit-with-thumbnail` and launch its
+background cover job, then come straight back here.** Do not wait for it and do not finish
+an edit without it: the finished reel and three cover options are handed over together.
+
 ## Step 0: setup gate (every session, before anything else)
 
 Run `python3 ~/.claude/skills/business-short-form-reels/setup/apply_profile.py --status`.
