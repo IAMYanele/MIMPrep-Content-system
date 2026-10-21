@@ -1,0 +1,57 @@
+{
+ "_note": "C34. Thomas gives the VERDICT FIRST then explains, which is the reverse of the format's usual order, so t_rank sits just after the tier word finishes rather than on its first frame - otherwise the card would pop and shrink in the same instant. The six activities are never spoken anywhere in the cut or the raw; these labels are the editor-approved inferences from his reasoning.",
+ "title": "Extracurriculars",
+ "duration": 37.328958,
+ "table_in": 0,
+ "table_out": 34.0,
+ "items": [
+  {
+   "label": "Society Member",
+   "image": "assets/items/society.svg",
+   "t_in": 0.0,
+   "t_name_end": 0.02,
+   "t_rank": 0.45,
+   "tier": "F"
+  },
+  {
+   "label": "Volunteering",
+   "image": "assets/items/volunteering.svg",
+   "t_in": 3.3,
+   "t_name_end": 3.32,
+   "t_rank": 5.7,
+   "tier": "B"
+  },
+  {
+   "label": "Case Competition",
+   "image": "assets/items/case.svg",
+   "t_in": 11.3,
+   "t_name_end": 11.32,
+   "t_rank": 12.0,
+   "tier": "A"
+  },
+  {
+   "label": "Running Real Money",
+   "image": "assets/items/money.svg",
+   "t_in": 15.7,
+   "t_name_end": 15.72,
+   "t_rank": 16.5,
+   "tier": "A"
+  },
+  {
+   "label": "One Week Program",
+   "image": "assets/items/oneweek.svg",
+   "t_in": 21.15,
+   "t_name_end": 21.17,
+   "t_rank": 22.3,
+   "tier": "C"
+  },
+  {
+   "label": "Part Time Job",
+   "image": "assets/items/job.svg",
+   "t_in": 26.69,
+   "t_name_end": 26.71,
+   "t_rank": 28.45,
+   "tier": "A"
+  }
+ ]
+}

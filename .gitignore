@@ -22,3 +22,7 @@ build/
 # mimprep-cover: creator footage links and photos of the creators stay local (public repo)
 .claude/skills/mimprep-cover/references/*.local.*
 .claude/skills/mimprep-cover/references/*.jpg
+
+# The Dubai reel references for mim-reel-edit are published on purpose: they are Thomas's
+# own posted marketing reels, and the skill is unusable as a style reference without them.
+!.claude/skills/mim-reel-edit/references/reels/*.mp4

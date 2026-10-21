@@ -1,0 +1,18 @@
+{
+ "_note": "C36. Thomas sorts nine things into three verdicts he repeats out loud: gets you in the door / sets you apart / hurts you. Mapped onto the format's fixed seven tiers as S = sets you apart, C = gets you in the door, F = hurts you; his actual wording still carries in the captions and the audio. Seven of the nine items are named in the footage; the two he never names are labelled with his own words for what they do. Name windows are collapsed because the label and the spoken words rarely coincide.",
+ "title": "What Counts",
+ "duration": 55.930875,
+ "table_in": 0,
+ "table_out": 52.6,
+ "items": [
+  {"label": "705 GMAT",          "image": "assets/items/score.svg",  "t_in": 0.00,  "t_name_end": 0.02,  "t_rank": 2.40,  "tier": "C"},
+  {"label": "An Activity You Built", "image": "assets/items/built.svg", "t_in": 6.03, "t_name_end": 6.05, "t_rank": 7.90, "tier": "S"},
+  {"label": "20 Applications",   "image": "assets/items/stack.svg",  "t_in": 12.39, "t_name_end": 12.41, "t_rank": 14.20, "tier": "F"},
+  {"label": "A Story About You", "image": "assets/items/story.svg",  "t_in": 17.81, "t_name_end": 17.83, "t_rank": 19.89, "tier": "S"},
+  {"label": "Just Networking",   "image": "assets/items/convo.svg",  "t_in": 22.19, "t_name_end": 22.21, "t_rank": 25.20, "tier": "C"},
+  {"label": "Not Researching",   "image": "assets/items/lookup.svg", "t_in": 25.90, "t_name_end": 25.92, "t_rank": 29.30, "tier": "F"},
+  {"label": "No Spike",          "image": "assets/items/spike.svg",  "t_in": 30.41, "t_name_end": 30.43, "t_rank": 33.90, "tier": "C"},
+  {"label": "AI Written Essays", "image": "assets/items/ai.svg",     "t_in": 36.14, "t_name_end": 36.16, "t_rank": 37.60, "tier": "F"},
+  {"label": "One Personal Story","image": "assets/items/book.svg",   "t_in": 44.92, "t_name_end": 44.94, "t_rank": 47.30, "tier": "S"}
+ ]
+}
