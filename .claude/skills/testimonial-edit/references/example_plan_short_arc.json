@@ -1,0 +1,47 @@
+{
+ "source": "F:/premiere pro render/Rec Creatory 001GG CAM 1 01_1.mp4",
+ "name": "Margaux - LBS MFA - the advice and how it paid off",
+ "version": "in-order",
+ "_note": "Four beats, still in source order so nothing is rearranged, but now an actual arc: who I am -> how I found LBS -> what I would tell you -> what I did and what it got me. The previous version had only the method and the payoff, which is why it read flat: no stakes, no person, nothing at risk.",
+ "blocks": [
+  {
+   "from": 0.0,
+   "to": 4.54,
+   "note": "1. WHO: I'm Margaux, an LBS MFA alumni"
+  },
+  {
+   "from": 29.6,
+   "to": 41.6,
+   "note": "2. HOW I FOUND IT: networking events in Paris -> knew I wanted a master in finance in London"
+  },
+  {
+   "from": 55.56,
+   "to": 67.7,
+   "note": "3. THE ADVICE: it's a big name, it feels intimidating, but trust yourself and apply"
+  },
+  {
+   "from": 78.74,
+   "to": 95.1,
+   "note": "4. WHAT I DID + PAYOFF: talked to current students -> PIMCO"
+  }
+ ],
+ "remove": [
+  [
+   1.84,
+   3.0
+  ],
+  [
+   35.46,
+   36.94
+  ],
+  [
+   63.12,
+   65.86
+  ]
+ ],
+ "_removals": [
+  "1.84-3.00   'Nice to meet you.' - dead weight in a short",
+  "35.46-36.94 'and the different programs' - a list item that adds nothing; leaves 'more about the school and that's when I knew'",
+  "63.12-65.86 'give yourself like the means to reach out your ambitions' - the weakest phrasing in the advice beat; leaves 'you really have to trust yourself, and just to apply'"
+ ]
+}

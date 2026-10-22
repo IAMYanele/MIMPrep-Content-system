@@ -1,0 +1,18 @@
+{
+  "source": "F:/premiere pro render/Rec Creatory 001GG CAM 1 01.mp4",
+  "name": "Margaux - LBS MFA alumni testimonial",
+  "version": "in-order",
+  "_note": "Whole testimonial, one cut. The take is unusually clean. Three things were tried and deliberately reverted after the dry run, listed below - a polished testimonial is one with no obvious stumbles, not one cut until it sounds synthetic.",
+  "blocks": [
+    {"from": 0.0, "to": 105.68, "note": "full testimonial: background, why London, the surprise, permission, method, PIMCO payoff"}
+  ],
+  "remove": [
+    [49.42, 51.96]
+  ],
+  "_kept_the_cut": "49.42-51.96 'people and a lot of British like' - she doubles back ('a lot of British people and a lot of British like students'). One cut takes the redundancy and the filler together, leaving 'I expected a lot of British students in general in the school'. Both edges sit in real gaps.",
+  "_reverted": [
+    "'like' in 'give yourself like the means' - the padded edge swallowed 'the', giving 'give yourself means to reach out'. Worse than the filler.",
+    "'a lot of' in 'there is a lot of right way to do it' - removing it took the article too, giving 'there is right way'. Fixing only 'lot of' needs a 100ms cut inside fast speech; not worth the click.",
+    "tighten 0.4 - only ONE pause in the take is over 0.30s, so it saved 0.24s, and the pause map and the word list disagree by ~0.3s around 21s, where it was cutting into 'I'm'."
+  ]
+}
