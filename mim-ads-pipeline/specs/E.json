@@ -1,0 +1,35 @@
+{
+ "cta": "book a free call",
+ "cuts": [
+  {
+   "clip": "C:/Users/yanel/Downloads/mim-ads-working-broll/C20250925_1382.mp4",
+   "in": 1.2,
+   "dur": 2.44,
+   "cx": 0.5,
+   "anchor": "more time",
+   "lead": 0.08,
+   "why": "an applicant in glasses working at his laptop in a seminar (approved Master E slot 1) - over 'you'll have more time, more experience, a better score'",
+   "back": 2
+  },
+  {
+   "clip": "F:/thomas b-roll/videos/b-roll/fx30 SW20250925_0041.MP4",
+   "in": 2.0,
+   "dur": 2.6,
+   "cx": 0.62,
+   "anchor": "better job",
+   "lead": 0.08,
+   "why": "a young professional in a suit in a modern lobby (approved Master E slot 2) - over 'salary you don't earn at a better job, and a year of delay'",
+   "back": 2
+  },
+  {
+   "clip": "C:/Users/yanel/Downloads/mim-ads-working-broll/E3_seminar_trio_punch.mp4",
+   "in": 0.0,
+   "dur": 2.36,
+   "cx": null,
+   "anchor": "competition doesn't",
+   "lead": 0.08,
+   "why": "three applicants in suits listening in a seminar (approved Master E slot 3) - over 'the competition doesn't wait, new applicants arrive every cycle'",
+   "back": 2
+  }
+ ]
+}

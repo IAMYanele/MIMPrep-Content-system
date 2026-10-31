@@ -1,0 +1,121 @@
+{
+ "cta": "book a free call",
+ "runs": [
+  {
+   "anchor": "at most top",
+   "back": 0,
+   "lead": 0.08,
+   "why": "top business schools / first round closed",
+   "pieces": [
+    {
+     "dur": 1.6,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20250925_1346.mp4",
+       "in": 1.0,
+       "cx": 0.33,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.4,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20260319_0034.mp4",
+       "in": 2.0,
+       "cx": 0.62,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "but every round",
+   "back": 0,
+   "lead": 0.1,
+   "why": "every round that passes means fewer seats",
+   "pieces": [
+    {
+     "dur": 1.6,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20250925_1392.mp4",
+       "in": 0.1,
+       "cx": 0.5,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.4,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20260319_0031.mp4",
+       "in": 0.5,
+       "cx": 0.3,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "the ones who started",
+   "back": 0,
+   "lead": 0.1,
+   "why": "the ones who started preparing weeks ago",
+   "pieces": [
+    {
+     "dur": 2.6,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20251227_2078.mp4",
+       "in": 13.0,
+       "cx": 0.34,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "start now",
+   "back": 0,
+   "lead": 0.08,
+   "why": "start now, apply with a full file",
+   "pieces": [
+    {
+     "dur": 1.4,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/C20260319_0007.mp4",
+       "in": 11.6,
+       "cx": 0.7,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.3,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/C20260319_0009.mp4",
+       "in": 0.2,
+       "cx": 0.42,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

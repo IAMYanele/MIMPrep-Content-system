@@ -1,0 +1,109 @@
+{
+ "cta": "book a free call",
+ "runs": [
+  {
+   "anchor": "more time",
+   "back": 2,
+   "lead": 0.08,
+   "why": "more time, more experience, a better score",
+   "pieces": [
+    {
+     "dur": 2.4,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/C20250925_1382.mp4",
+       "in": 1.2,
+       "cx": 0.5,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "better job",
+   "back": 2,
+   "lead": 0.08,
+   "why": "salary at a better job, a year of delay",
+   "pieces": [
+    {
+     "dur": 2.6,
+     "panels": [
+      {
+       "src": "F:/thomas b-roll/videos/b-roll/fx30 SW20250925_0041.MP4",
+       "in": 2.0,
+       "cx": 0.62,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "competition doesn't",
+   "back": 2,
+   "lead": 0.08,
+   "why": "the competition doesn't wait, new applicants every cycle",
+   "pieces": [
+    {
+     "dur": 1.6,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/E3_seminar_trio_punch.mp4",
+       "in": 0.0,
+       "cx": 0.5,
+       "cy": 0.45,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.6,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20250925_1349.mp4",
+       "in": 0.3,
+       "cx": 0.45,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "not sure you're",
+   "back": 0,
+   "lead": 0.1,
+   "why": "a call will tell you",
+   "pieces": [
+    {
+     "dur": 1.2,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/DJI_20260824102252_0006_D.mp4",
+       "in": 5.0,
+       "cx": 0.36,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.2,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/B roll Thomas having a call .mp4",
+       "in": 9.0,
+       "cx": 0.3,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

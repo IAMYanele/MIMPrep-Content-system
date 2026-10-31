@@ -1,0 +1,97 @@
+{
+ "cta": "book a free call",
+ "runs": [
+  {
+   "anchor": "you need the",
+   "back": 0,
+   "lead": 0.04,
+   "why": "GMAT, essays, letters, CV, interview",
+   "pieces": [
+    {
+     "dur": 2.2,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/C20250925_1377_stab.mp4",
+       "in": 6.4,
+       "cx": 0.56,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "which your referees",
+   "back": 0,
+   "lead": 0.5,
+   "why": "referees send late / a CV rewritten",
+   "pieces": [
+    {
+     "dur": 1.9,
+     "panels": [
+      {
+       "src": "C:/Users/yanel/Downloads/mim-ads-working-broll/C2_letter_punch.mp4",
+       "in": 0.2,
+       "cx": 0.5,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    },
+    {
+     "dur": 1.6,
+     "panels": [
+      {
+       "src": "F:/thomas b-roll/videos/b-roll/b-rolls_V4.mp4",
+       "in": 4.0,
+       "cx": 0.55,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "together that's",
+   "back": 0,
+   "lead": 0.08,
+   "why": "several weeks of real work",
+   "pieces": [
+    {
+     "dur": 2.6,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20251228_0001.mp4",
+       "in": 9.0,
+       "cx": 0.5,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "anchor": "you'll see that",
+   "back": 0,
+   "lead": 0.1,
+   "why": "the real start date is now",
+   "pieces": [
+    {
+     "dur": 2.4,
+     "panels": [
+      {
+       "src": "G:/mim-master-urgency-2026-10/broll-kit/C20260319_0005.mp4",
+       "in": 11.0,
+       "cx": 0.28,
+       "cy": 0.5,
+       "zoom": 1.0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
