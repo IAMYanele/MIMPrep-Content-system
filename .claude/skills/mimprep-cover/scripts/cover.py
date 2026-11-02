@@ -1,58 +1,63 @@
-"""Lay out a MiM Prep reel cover (1080x1920) on clean MiM paper in brand blue.
+"""Lay out a MiM Prep reel cover (1080x1920): the dot-grid page in MiM blue or white, the logo, the headline,
+and the cutout rising from the bottom edge. Nothing else goes on the page: no shapes, no pills, no photo
+backgrounds (all rejected; see references/style.md).
 
-Layouts (all approved by the team, 2026-10-20):
-  arch    girl cutout in front of a MiM-blue arch exactly as wide as she is, so the straight edges where the
-          source frame cut her arms become the arch's sides. Head breaks out above the arch.      (Manon)
-  circle  girl cutout in front of a blue ringed circle centred on her face; head breaks over its top. (Maria)
-  photo   a full real photo (girl composited on a high-end plate) filling the lower half under a soft fade. (Mathilde)
-  behind  girl cutout scaled to the full width (arm edges run off the canvas) with the last headline line
-          tucked behind the top of her head.
-  band    girl cutout in front of a full-width blue band, white pill.
+Layouts:
+  plain       white paper + grey dots, blue text, cutout under the headline.
+  bluepage    MiM-blue page + blue dots, white text, cutout under the headline.
+  behind      white page; the last headline line tucks behind the top of her head (approved 2026-10-29).
+  bluebehind  the same on the blue page.
 
 usage:
-  python cover.py --layout arch   --person cut.png --kicker "The" --lines "London|Loophole" --pill "for international students" --out a.jpg
-  python cover.py --layout circle --person cut.png --kicker "The unfair advantage of a" --lines "Study Here.|Work Here." --pill "UK Masters" --out b.jpg
-  python cover.py --layout photo  --photo comp.png --lines "Study in London.|Get hired in London." --pill "The UK Masters advantage" --out c.jpg
+  python cover.py --layout plain    --person cut-g.png --lines "9 free courses|worth opening" --out A.jpg
+  python cover.py --layout bluepage --person cut-g.png --kicker "What actually got me into" --lines "LBS" --out B.jpg
+  python cover.py --layout bluepage --person tower.png --center-bbox --head-w 100 --head-y 820 --lines "Are IE students|lazy?" --out C.jpg
 """
 import argparse
 import os
 import sys
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, os.path.dirname(__file__))
-from common import W, H, BLUE, BLUE_L, PAPER, DOT, GRID_SAFE, bold, serif, logo
+from common import W, H, BLUE, PAPER, DOT, GRID_SAFE, bold, serif, logo
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--layout", required=True, choices=["arch", "circle", "photo", "behind", "band"])
-ap.add_argument("--person", help="RGBA cutout from cutout.py (arch/circle/behind/band)")
-ap.add_argument("--photo", help="full photo, e.g. composite.py output (photo layout)")
-ap.add_argument("--kicker", default="")
+ap.add_argument("--layout", required=True, choices=["plain", "bluepage", "behind", "bluebehind"])
+ap.add_argument("--person", required=True, help="RGBA cutout (cutout.py, then clean.py / grade.py)")
+ap.add_argument("--kicker", default="", help="small italic line above the headline; only when the headline needs it")
 ap.add_argument("--lines", required=True, help="headline lines separated by |")
-ap.add_argument("--pill", default="")
+ap.add_argument("--head-w", type=int, default=380, help="plain/bluepage: her head (hair) width on the canvas, px")
+ap.add_argument("--head-y", type=int, default=0, help="where the top of her head lands (0 = just under the headline)")
+ap.add_argument("--center-bbox", action="store_true", help="centre the cutout on its full width (objects like a building)")
 ap.add_argument("--out", required=True)
-ap.add_argument("--head-y", type=int, default=760, help="where the top of her head lands (canvas px)")
-ap.add_argument("--width", type=int, default=900, help="arch: arch and person width; circle/band: person width")
 a = ap.parse_args()
 lines = a.lines.split("|")
+blue = a.layout in ("bluepage", "bluebehind")
+ink = "white" if blue else BLUE
 notes = []          # (top, bottom, text) of every text element, for the grid-safe check
 
 
-def paper():
-    c = Image.new("RGBA", (W, H), PAPER + (255,))
+def page():
+    c = Image.new("RGBA", (W, H), (BLUE if blue else PAPER) + (255,))
     d = ImageDraw.Draw(c)
+    dot, r = ((28, 96, 188), 3) if blue else (DOT, 2)           # blue page: subtle polka dots (brighter ones read as too high-contrast)
     for y in range(24, H, 36):
         for x in range(24, W, 36):
-            d.ellipse((x - 2, y - 2, x + 2, y + 2), fill=DOT)
+            d.ellipse((x - r, y - r, x + r, y + r), fill=dot)
     lg = logo()
+    if blue:
+        alpha = lg.split()[3]
+        lg = Image.new("RGBA", lg.size, (255, 255, 255, 255))
+        lg.putalpha(alpha)
     w = 180
     lg = lg.resize((w, round(lg.height * w / lg.width)), Image.LANCZOS)
     c.alpha_composite(lg, ((W - w) // 2, 255))
     return c
 
 
-def ctext(d, y, t, f, fill=BLUE, track=0, stroke=0):
+def ctext(d, y, t, f, fill, track=0, stroke=0):
     tw = sum(d.textlength(ch, font=f) + track for ch in t) - track
     x = (W - tw) / 2
     for ch in t:
@@ -60,19 +65,6 @@ def ctext(d, y, t, f, fill=BLUE, track=0, stroke=0):
         x += d.textlength(ch, font=f) + track
     bb = d.textbbox((0, y), t, font=f)
     notes.append((bb[1], bb[3], t))
-
-
-def pill(c, y, t, f=None, bgc=BLUE, fg="white", pad=(36, 14)):
-    f = f or serif(58)
-    d = ImageDraw.Draw(c)
-    bb = d.textbbox((0, 0), t, font=f)
-    tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    h = th + 2 * pad[1] + 8
-    x0 = (W - tw) / 2 - pad[0]
-    d.rounded_rectangle((x0, y, x0 + tw + 2 * pad[0], y + h), radius=h // 2, fill=bgc)
-    d.text(((W - tw) / 2 - bb[0], y + pad[1] - bb[1] + 4), t, font=f, fill=fg)
-    notes.append((y, y + h, t))
-    return y + h
 
 
 def headtop(p):
@@ -88,104 +80,77 @@ def face_cx(p):
     return float(np.where(band.any(0))[0].mean())
 
 
-def place(cut, s, head_y, cx=W / 2):
-    p = Image.open(cut).convert("RGBA")
-    h0, fx = headtop(p), face_cx(p)
-    p = p.resize((round(p.width * s), round(p.height * s)), Image.LANCZOS)
-    x, y = round(cx - fx * s), round(head_y - h0 * s)
-    return p.crop((0, 0, p.width, min(p.height, H - y))), x, y
+def head_width(p):
+    m = np.asarray(p.split()[3]) > 128
+    t = headtop(p)
+    band = m[t + p.height // 40: t + p.height // 12]
+    return float(np.median(band.sum(1)))
 
 
-def headline_top(d, yy=395, size=118, ksize=70):
-    if a.kicker:
-        ctext(d, yy, a.kicker, serif(ksize))
-        yy += 90
-    for t in lines:
-        ctext(d, yy, t, bold(size), track=-4, stroke=1)
-        yy += round(size * 1.12)
+def defringe(p):
+    """Pull the old background out of her soft hair edge: semi-transparent pixels take the colour of the
+    nearby opaque pixels (premultiplied blur), and the alpha is tightened by a pixel. Her pixels are not moved."""
+    arr = np.asarray(p).astype(np.float32)
+    al = arr[..., 3:] / 255
+    k = max(3, round(p.width / 400)) | 1
+    num = np.asarray(Image.fromarray((arr[..., :3] * al).clip(0, 255).astype(np.uint8)).filter(ImageFilter.BoxBlur(k))).astype(np.float32)
+    den = np.asarray(Image.fromarray((al[..., 0] * 255).astype(np.uint8)).filter(ImageFilter.BoxBlur(k))).astype(np.float32)[..., None] / 255
+    inner = num / np.maximum(den, 1e-3)
+    edge = (al < 0.97) & (al > 0)
+    arr[..., :3] = np.where(edge, inner, arr[..., :3])
+    a2 = Image.fromarray(arr[..., 3].astype(np.uint8)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))
+    out = Image.fromarray(arr.clip(0, 255).astype(np.uint8))
+    out.putalpha(a2)
+    return out
 
 
-c = paper()
+c = page()
 d = ImageDraw.Draw(c)
+p0 = defringe(Image.open(a.person).convert("RGBA"))
+m = np.asarray(p0.split()[3]) > 128
+touch_l, touch_r = m[:, :3].any(), m[:, -3:].any()
+h0, fx = headtop(p0), face_cx(p0)
 
-if a.layout == "arch":
-    s = a.width / Image.open(a.person).width
-    p, x, y = place(a.person, s, a.head_y)
-    x = (W - p.width) // 2          # centre the cutout itself, so its cut edges meet the arch's sides
-    top = a.head_y + 120
-    sh = Image.new("RGBA", (W, H))
-    ds = ImageDraw.Draw(sh)
-    ds.rounded_rectangle((x, top, x + p.width - 1, H + 500), radius=p.width // 2, fill=BLUE + (255,))
-    for r in range(p.width // 2 - 40, 60, -55):
-        ds.arc((W // 2 - r, top + p.width // 2 - r, W // 2 + r, top + p.width // 2 + r), 180, 360, fill=BLUE_L + (70,), width=2)
-    c.alpha_composite(sh)
-    c.alpha_composite(p, (x, y))
-    headline_top(d)
-    if a.pill:
-        pill(c, 1560, a.pill)
+if a.layout in ("plain", "bluepage"):
+    yy = 400
+    if a.kicker:
+        ctext(d, yy, a.kicker, serif(72), ink)
+        yy += 96
+    size = 124 if max(len(t) for t in lines) <= 13 else 108
+    for t in lines:
+        ctext(d, yy, t, bold(size), ink, track=-4, stroke=1)
+        yy += round(size * 1.12)
+    head_y = a.head_y or yy + 10                          # her hair starts just under the headline
+    s = a.head_w / head_width(p0)
+    s = max(s, (H - head_y) / (p0.height - h0))           # her frame's bottom edge runs off the canvas
+    if touch_l or touch_r:
+        s = max(s, W / p0.width)                          # side cut edges must also run off the canvas
+    p = p0.resize((round(p0.width * s), round(p0.height * s)), Image.LANCZOS)
+    x, y = round(W / 2 - fx * s), round(head_y - h0 * s)
+    if a.center_bbox: x = (W - p.width) // 2                # an object (building) is centred on its full width, not its top
+    if touch_l: x = min(x, 0)
+    if touch_r: x = max(x, W - p.width)
+    c.alpha_composite(p.crop((0, 0, p.width, min(p.height, H - y))), (x, y))
 
-elif a.layout == "circle":
-    s = a.width / Image.open(a.person).width
-    p, x, y = place(a.person, s, a.head_y + 20)
-    r = 410
-    cy = a.head_y + 20 + r + 20
-    sh = Image.new("RGBA", (W, H))
-    ds = ImageDraw.Draw(sh)
-    ds.ellipse((W // 2 - r, cy - r, W // 2 + r, cy + r), fill=BLUE + (255,))
-    for rr in range(r - 45, 80, -55):
-        ds.ellipse((W // 2 - rr, cy - rr, W // 2 + rr, cy + rr), outline=BLUE_L + (70,), width=2)
-    c.alpha_composite(sh)
-    c.alpha_composite(p, (x, y))
-    headline_top(d)
-    if a.pill:
-        pill(c, 1560, a.pill, serif(62))
-
-elif a.layout == "band":
-    s = a.width / Image.open(a.person).width
-    p, x, y = place(a.person, s, a.head_y + 20)
-    sh = Image.new("RGBA", (W, H))
-    ds = ImageDraw.Draw(sh)
-    ds.rectangle((0, 1240, W, H), fill=BLUE + (255,))
-    for yy in range(1270, H, 46):
-        ds.line((0, yy, W, yy), fill=BLUE_L + (45,), width=2)
-    c.alpha_composite(sh)
-    c.alpha_composite(p, (x, y))
-    headline_top(d)
-    if a.pill:
-        pill(c, 1550, a.pill, serif(70), bgc="white", fg=BLUE)
-
-elif a.layout == "behind":
-    p0 = Image.open(a.person)
-    s = W / p0.width                 # full width: the arm edges run off the canvas
-    p, x, y = place(a.person, s, a.head_y + 40)
-    x = 0
-    ht = y + round(headtop(p0) * s)
+else:                                                     # behind / bluebehind
+    s = W / p0.width                                      # full width: the arm edges run off the canvas
+    p = p0.resize((round(p0.width * s), round(p0.height * s)), Image.LANCZOS)
+    head_y = a.head_y or 800
+    x, y = 0, round(head_y - h0 * s)
+    ht = y + round(h0 * s)
     f = bold(150)
     cap = d.textbbox((0, 0), "H", font=f)
     ch = cap[3] - cap[1]
     gap = round(ch * 1.25)
-    ylast = ht + round(ch * 0.18) - ch          # the last line tucks just behind the top of her head
+    ylast = ht + round(ch * 0.18) - ch                    # the last line tucks just behind the top of her head
     ys = [ylast - gap * (len(lines) - 1 - i) for i in range(len(lines))]
     if a.kicker:
-        ctext(d, ys[0] - cap[1] - 100, a.kicker, serif(76))
-    for t, yy in zip(lines, ys):
-        ctext(d, yy - cap[1], t, f, track=-5, stroke=1)
-    c.alpha_composite(p, (x, y))
-    if a.pill:
-        pill(c, 1560, a.pill)
+        ctext(d, ys[0] - cap[1] - 100, a.kicker, serif(76), ink)
+    for t, yt in zip(lines, ys):
+        ctext(d, yt - cap[1], t, f, ink, track=-5, stroke=1)
+    c.alpha_composite(p.crop((0, 0, p.width, min(p.height, H - y))), (x, y))
 
-elif a.layout == "photo":
-    ctext(d, 380, lines[0], bold(118), track=-4, stroke=1)
-    if len(lines) > 1:
-        ctext(d, 530, lines[1], bold(84), fill=BLUE_L, track=-3, stroke=1)
-    if a.pill:
-        pill(c, 680, a.pill, serif(60))
-    top = 860
-    im = ImageOps.fit(Image.open(a.photo).convert("RGB"), (W, H - top), Image.LANCZOS, centering=(0.5, 0.3)).convert("RGBA")
-    fade = (np.clip(np.arange(H - top) / 160, 0, 1)[:, None] * 255).repeat(W, 1).astype(np.uint8)
-    im.putalpha(Image.fromarray(fade))
-    c.alpha_composite(im, (0, top))
-
+print(f"scale {s:.2f}x (source {p0.width}x{p0.height})")
 c.convert("RGB").save(a.out, quality=95)
 bad = [t for y0, y1, t in notes if y0 < GRID_SAFE[0] or y1 > GRID_SAFE[1]]
 print(a.out, "| WARNING, outside the profile-grid crop:" if bad else "| all text inside the profile-grid crop", bad if bad else "")

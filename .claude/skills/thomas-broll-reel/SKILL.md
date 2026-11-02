@@ -83,6 +83,13 @@ so none vanish from the captions.
 
 ## 4. Choose the b-roll
 
+**For an ad, read `mim-ad-broll-selection` first.** It carries the selection rules that came
+out of the October 2026 Master pack: show what the sentence is about rather than the
+presenter, never cut away over the CTA, hold 2–3 s, give every cutaway one centred subject,
+and never reuse a clip across the ads in a set. The pool below is right for reels about
+Thomas; ads about applicants usually need students-and-offices footage pulled from the
+Frame.io library instead.
+
 **Only use the footage the user names.** Here that's Thomas's own pool:
 `F:\thomas b-roll` (top level) and `F:\thomas content\b-rolls`. No stock.
 `F:\thomas content\b-roll stills` is a fast visual index: every still's filename is

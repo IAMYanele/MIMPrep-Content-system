@@ -1,15 +1,21 @@
 """Cut a person out of a real frame (original pixels, alpha-matted hair). The person is never altered.
-Also reports where her arms touch the frame edges: those straight cut edges must be hidden in the layout
-(run them off the canvas edge, or line them up with a shape).
-usage: python cutout.py <frame> <x0,y0,x1,y1> <out.png>"""
-import sys
+Also reports where her arms touch the frame edges: cover.py runs those straight cut edges off the canvas.
+--model isnet (isnet-general-use) holds dark clothes and hair better than the default u2net; if it still leaves
+see-through holes in her top, run solidify.py next.
+usage: python cutout.py <frame> <x0,y0,x1,y1> <out.png> [--model u2net|isnet]"""
+import argparse
 import numpy as np, cv2
 from PIL import Image
 from rembg import remove, new_session
-src, box, out = sys.argv[1], tuple(int(v) for v in sys.argv[2].split(",")), sys.argv[3]
+ap = argparse.ArgumentParser()
+ap.add_argument("src"); ap.add_argument("box"); ap.add_argument("out")
+ap.add_argument("--model", default="u2net", choices=["u2net", "isnet"])
+args = ap.parse_args()
+src, box, out = args.src, tuple(int(v) for v in args.box.split(",")), args.out
 im = Image.open(src).convert("RGB").crop(box); W, H = im.size
 sc = 1400 / max(W, H); small = im.resize((round(W * sc), round(H * sc)), Image.LANCZOS)
-a = np.asarray(remove(small, session=new_session("u2net"), only_mask=True, alpha_matting=True, alpha_matting_foreground_threshold=240,
+model = {"u2net": "u2net", "isnet": "isnet-general-use"}[args.model]
+a = np.asarray(remove(small, session=new_session(model), only_mask=True, alpha_matting=True, alpha_matting_foreground_threshold=240,
                       alpha_matting_background_threshold=15, alpha_matting_erode_size=8)).astype(np.float32) / 255
 n, lab, st, _ = cv2.connectedComponentsWithStats((a > .5).astype(np.uint8))
 a *= cv2.dilate((lab == 1 + np.argmax(st[1:, cv2.CC_STAT_AREA])).astype(np.uint8), np.ones((15, 15), np.uint8))   # biggest blob = her
