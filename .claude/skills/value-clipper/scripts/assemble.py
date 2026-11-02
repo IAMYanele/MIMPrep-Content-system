@@ -20,8 +20,9 @@ on a word start shaves the consonant.
 The dry run prints the joined script with "|" at every join and [MOVED] on blocks out of
 source order. Read it aloud: it must play as one continuous thought, with no dangling
 "and that's why..." and no "this"/"he" pointing at something that was cut.
-Rendering: frame-accurate trim per window with hard video cuts, audio crossfaded across every join
-(30-60ms, centred on the cut so sync holds), concat,
+Rendering: both streams cut on the same frame-snapped times (so the audio cannot drift window by
+window), hard video cuts, audio sample-accurate and crossfaded across every join (4-60ms, centred
+on the cut and never longer than the span that was removed, so a tight cut cannot bleed), concat,
 original resolution and frame rate, two-pass loudnorm to -14 LUFS. Then the output is
 re-transcribed (locally) and printed, so the words are checked in the actual file.
 """
@@ -173,25 +174,52 @@ def join_fade(a, b):
     """Audio crossfade length at the join a|b. Fading each side to zero (the old way) left a
     small hole in the room tone at every join, and with 20+ joins a clip sounded chopped.
     A crossfade centred on the cut keeps the sound continuous: 60ms where both sides sit in
-    silence, 30ms at an energy dip, where a longer one would smear the next word's onset."""
-    return 0.03 if "dip" in (a.get("how", ("", ""))[1], b.get("how", ("", ""))[0]) else 0.06
+    silence, 30ms at an energy dip, where a longer one would smear the next word's onset.
+
+    The fade is taken from the material that was REMOVED at this join (each side reaches
+    fade/2 into it), so it can never be longer than the removed span -- with cuts landing 2ms
+    after a word stops, a fixed 60ms would reach straight into the next word and bleed the
+    removed audio back in at half volume."""
+    base = 0.03 if "dip" in (a.get("how", ("", ""))[1], b.get("how", ("", ""))[0]) else 0.06
+    gap = max(0.0, b["s"] - a["e"])
+    return round(max(0.004, min(base, gap)), 6)
+
+
+def source_fps(src):
+    r = subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                                 "stream=r_frame_rate", "-of", "csv=p=0", src]).decode().strip().strip(",")
+    num, den = (r.split("/") + ["1"])[:2]
+    return float(num) / float(den)
 
 
 def render(src, wins, out):
-    """Video: hard cuts on the frame. Audio: each window is taken d/2 wider at every join and
-    the neighbours crossfade over d, so the audio stays exactly as long as the video."""
+    """Video: hard cuts on the frame. Audio: sample-accurate, taken fade/2 wider at every join
+    so the neighbours crossfade inside the removed material.
+
+    Both streams are cut on the SAME frame-snapped times. trim keeps whole frames, so a window
+    asked for in plain seconds is really (frame-rounded e) - (frame-rounded s) long, and the
+    audio was handed the unrounded length: measured on a 13-window clip at 25fps, individual
+    windows sat up to 37ms out, i.e. the picture and the sound of one join disagreed by nearly
+    a frame. The signs are random so they largely cancel over a clip (-17ms end to end there),
+    which is why this never showed up as obvious drift -- it showed up as joins that felt soft.
+    Snapping first, then deriving the audio from the snapped times, makes every window exact."""
     parts, n = [], len(wins)
+    fps = source_fps(src)
     fades = [join_fade(wins[i], wins[i + 1]) for i in range(n - 1)]
     for i, w in enumerate(wins):
         pre = fades[i - 1] / 2 if i else 0.0
         post = fades[i] / 2 if i < n - 1 else 0.0
-        parts.append(f"[0:v]trim=start={w['s']:.3f}:end={w['e']:.3f},setpts=PTS-STARTPTS[v{i}]")
-        parts.append(f"[0:a]atrim=start={max(0.0, w['s'] - pre):.3f}:end={w['e'] + post:.3f},asetpts=PTS-STARTPTS[a{i}]")
+        f0, f1 = round(w["s"] * fps), round(w["e"] * fps)      # the frames that will actually be kept
+        vs, ve = (f0 - 0.25) / fps, (f1 - 0.25) / fps          # quarter-frame back: land inside the frame, not on its edge
+        a0, a1 = f0 / fps, f1 / fps                            # audio spans exactly the same wall time
+        parts.append(f"[0:v]trim=start={vs:.6f}:end={ve:.6f},setpts=PTS-STARTPTS[v{i}]")
+        parts.append(f"[0:a]atrim=start={max(0.0, a0 - pre):.6f}:end={a1 + post:.6f},asetpts=PTS-STARTPTS[a{i}]")
+        w["frames"] = f1 - f0
     parts.append("".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0[v]")
     prev = "a0"
     for i in range(1, n):
-        parts.append(f"[{prev}][a{i}]acrossfade=d={fades[i - 1]:.3f}:c1=tri:c2=tri[x{i}]"); prev = f"x{i}"
-    total = sum(w["e"] - w["s"] for w in wins)
+        parts.append(f"[{prev}][a{i}]acrossfade=d={fades[i - 1]:.6f}:c1=tri:c2=tri[x{i}]"); prev = f"x{i}"
+    total = sum(w["frames"] for w in wins) / fps
     parts.append(f"[{prev}]afade=t=in:d=0.04,afade=t=out:st={max(0.0, total - 0.12):.3f}:d=0.12[a]")
     tmp = str(Path(out).with_suffix(".tmp.mp4"))
     subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", src, "-filter_complex", ";".join(parts),
@@ -246,7 +274,9 @@ def main():
     err = subprocess.run(["ffmpeg", "-v", "error", "-i", a.out, "-f", "null", "-"], capture_output=True, text=True).stderr
     d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", a.out],
                              capture_output=True, text=True).stdout.strip())
-    print(f"\nrendered {a.out}: {d:.2f}s (planned {total:.2f}s)" + (f"\nDECODE ERRORS: {err[:200]}" if err.strip() else ", decodes clean"))
+    snapped = sum(w["frames"] for w in wins) / source_fps(plan["source"])   # what the frame grid actually allows
+    print(f"\nrendered {a.out}: {d:.3f}s (planned {total:.3f}s, frame-snapped {snapped:.3f}s, "
+          f"off by {(d - snapped) * 1000:+.0f}ms)" + (f"\nDECODE ERRORS: {err[:200]}" if err.strip() else ", decodes clean"))
     vdir = Path(tempfile.gettempdir()) / f"vc_verify_{os.getpid()}"
     subprocess.run([sys.executable, str(Path(__file__).with_name("transcribe.py")), a.out, "--out", str(vdir), "--local"],
                    check=True, capture_output=True)

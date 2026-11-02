@@ -196,6 +196,11 @@ raw file, and render one reel at a time.
    chat, throat clears; keep the LAST complete take; keep both a mid-video CTA and an end CTA). Then
    `python3 $S/02_cut.py $W && python3 $S/02b_guard_words.py $W && python3 $S/03_verify_cut.py $W`. The guard stops a
    silence cut clipping a word. Read the EDIT line as a script.
+   Word edges are measured at 1ms (20ms window, 1ms step) on broadband OR high-band energy and
+   the cut lands 2ms after the word stops; `--pad-out` / `--pad-in` loosen it. The high band is
+   what keeps a trailing "s"/"f" in: measured on a real take, broadband alone ended words a
+   median 28ms early and up to 97ms early on fricatives. Frame rounding goes outward so
+   quantising a keep cannot undo that 2ms.
 3. **Render the cut and crops.** `python3 $S/04_render_cut.py "<raw>" $W/edl.json "$OUT/<Title> - CUT 16x9.mp4"`,
    then `$S/07_crops.sh "$OUT/<Title> - CUT 16x9.mp4" "$OUT/hf-media"` (check a still first: the default crops are the
    ones saved at setup for the usual camera; pass new numbers when the framing differs; it also makes the cut-out used

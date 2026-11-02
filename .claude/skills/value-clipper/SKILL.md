@@ -69,8 +69,8 @@ Three things make that possible:
 2. **Hidden fillers.** `fillers.py` measures the sound inside every gap between words.
    Each voiced burst is transcribed on its own: an "uh" or wordless sound is listed as
    `hidden`, while a real word (Whisper's timing was off) is dropped from the list.
-3. **Energy-dip cuts.** With no pause, the cut goes at the quietest 10ms between the two
-   words, with a short fade. That's how an editor cuts a tight um.
+3. **Energy-dip cuts.** With no pause, the cut goes at the quietest millisecond between the
+   two words, with a short fade. That's how an editor cuts a tight um.
 
 Each finding comes graded **PAUSE** or **DIP** (remove it) or **HARD** (no gap at all:
 drop the whole sentence instead of cutting inside a word).
@@ -132,8 +132,21 @@ python $SKILL/scripts/assemble.py <job>/plan_segA.json --pauses <job>/segA --wor
 
 The spec lists the words to KEEP by index (`keeps.py` documents the format). Every gap
 between kept ranges becomes a removal with edges on the measured audio, and the plan is
-marked `exact_edges` so `assemble.py` leaves them alone. For any edge `keeps.py` flags as
-shallow, print the 10ms dB values across the gap and set the edge by hand (`override`).
+marked `exact_edges` so `assemble.py` leaves them alone.
+
+**How tight the cuts are.** Word edges are measured at 1ms resolution, not read off the
+transcript, and a removal starts 2ms after the word stops carrying sound and ends 2ms
+before the next one starts, so the pause goes entirely instead of being halved. Set `tail`
+in the spec to loosen it. Two things make that safe rather than reckless:
+- the edge test looks at a **high band as well as broadband**, because a trailing "s" or
+  "f" is ~20dB down broadband but loud above 4kHz. Measured on a 75-word CV review take,
+  broadband alone called words finished a median 28ms early (up to 97ms on fricatives) --
+  the old 35ms pad existed to cover exactly that, and covered it unevenly.
+- the crossfade is taken from the removed span and can never exceed it, so a 2ms tail gets
+  a short fade instead of a 60ms one reaching into the next word.
+
+For any edge `keeps.py` flags as shallow, print the 1ms dB values across the gap and set
+the edge by hand (`override`).
 Spell-fix caption words in `<job>/segA_c/words_fixed.json` (same indices) before running
 `keeps.py`.
 

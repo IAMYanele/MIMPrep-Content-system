@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Step 2 — the tight cut.   02_cut.py <work_dir> [--fps 24000/1001] [--gap 0.12] [--pad-out 0.035] [--pad-in 0.025]
+"""Step 2 — the tight cut.   02_cut.py <work_dir> [--fps 24000/1001] [--gap 0.12] [--pad-out 0.002] [--pad-in 0.002]
 
 Reads   work/tx.json, a48.wav, a16.wav  and the hand-written decision files (all optional):
   flubs.json    [[start,end],...]  RAW seconds to remove: failed takes, repeats, off-script chat.
@@ -11,17 +11,38 @@ Writes  work/words.json, rms.npy, edl.json {keeps:[[f0,f1],...] source frames, d
 The standard: "sharp fast cuts that leave no gaps at the end or start of my sentences".
   - every pause > --gap between two kept words is cut, leaving pad-out after the word and pad-in before the next
   - breaths/air between words (unvoiced + quiet >= 0.18s) are cut too
-  - word edges come from full-band RMS (boundary = >=100ms below -46 dBFS), not from whisper's times
+  - word edges are MEASURED at 1ms (20ms window, 1ms step) on broadband OR high-band energy,
+    never read off whisper's times: the cut lands 2ms after the word stops carrying sound.
+    The high band is what keeps a trailing "s"/"f" in -- a fricative is ~20dB down broadband
+    but loud above 4kHz, so broadband alone ends the word early and the tight cut shaves it.
+  - frame rounding goes OUTWARD so quantising the keep cannot undo that 2ms
 ALWAYS run 03_verify_cut.py afterwards and read the result."""
 import numpy as np, json, sys, wave, os
 from fractions import Fraction
 W = sys.argv[1]
 arg = lambda k, d: (sys.argv[sys.argv.index(k) + 1] if k in sys.argv else d)
-FPS = float(Fraction(arg("--fps", "24000/1001"))); GAP = float(arg("--gap", 0.12)); PO = float(arg("--pad-out", 0.035)); PI = float(arg("--pad-in", 0.025))
+FPS = float(Fraction(arg("--fps", "24000/1001"))); GAP = float(arg("--gap", 0.12)); PO = float(arg("--pad-out", 0.002)); PI = float(arg("--pad-in", 0.002))
 J = json.load(open(f"{W}/tx.json"))
 w = wave.open(f"{W}/a48.wav"); n = w.getnframes(); a = np.frombuffer(w.readframes(n), np.int16).astype(np.float32) / 32768
 DUR = n / 48000; h = 480; m = len(a) // h
 rms = 20 * np.log10(np.sqrt((a[: m * h].reshape(m, h) ** 2).mean(1)) + 1e-9); rms = np.convolve(rms, np.ones(3) / 3, "same"); np.save(f"{W}/rms.npy", rms)
+# A second envelope at 1ms for the word edges only: rms stays on its 10ms grid because the
+# protect/breath/sustained-sound tests are tuned to it and 03_verify_cut.py reads rms.npy.
+# 1ms STEP, 20ms WINDOW -- a true 1ms RMS is not loudness (a 100Hz voice does not finish one
+# cycle in 1ms), so its minimum lands on a zero crossing inside a vowel.
+H1, W1 = 48, 960                               # 1ms step, 20ms window at 48kHz
+def _env1(x):
+    n = len(x) // H1
+    c = np.concatenate(([0.0], np.cumsum(np.square(x, dtype=np.float64))))
+    i = np.arange(n) * H1; lo = np.clip(i - W1 // 2, 0, len(x)); hi = np.clip(i + W1 // 2, 0, len(x))
+    return (20 * np.log10(np.sqrt((c[hi] - c[lo]) / np.maximum(hi - lo, 1)) + 1e-9)).astype(np.float32)
+E1 = _env1(a)
+# +6dB/oct tilt. A trailing "s"/"f"/"th" is ~20dB down broadband but loud above 4kHz; on
+# broadband alone the word reads as finished early and a tight cut shaves the fricative.
+E1H = _env1(np.diff(a, prepend=a[:1]))
+QUIET = -46.0                                  # same absolute floor the 10ms tests use
+QUIET_H = float(np.percentile(E1H, 90)) - (float(np.percentile(E1, 90)) - QUIET)   # same distance under speech
+live1 = (E1 > QUIET) | (E1H > QUIET_H)         # sound of any kind is still happening
 words = []
 for seg in J["transcription"]:
     for t in seg["tokens"]:
@@ -56,24 +77,29 @@ words.sort(key=lambda x: x[1]); json.dump(words, open(f"{W}/words.json", "w"))
 infl = lambda t: any(a_ <= t < b_ for a_, b_ in FL)
 kw = [x for x in words if not infl((x[1] + x[2]) / 2)]
 above = lambda t: rms[min(len(rms) - 1, int(t * 100))] > -46
+HOLD = 0.06                                    # quiet for this long = the word is over
+def _edge(t0, fwd):
+    """The millisecond speech actually stops (fwd) or starts (not fwd), searched 1s from t0.
+    Whisper's word time is a 10-20ms estimate that drifts +-100ms, so it only says where to
+    look, never where to cut. Returns None if it never goes quiet, and the caller keeps the
+    whisper time rather than inventing one."""
+    n = len(live1); need = max(1, int(round(HOLD * 1000))); step = 1 if fwd else -1
+    k = min(max(int(round(t0 * 1000)), 0), n - 1)
+    stop = min(n - 1, k + 1000) if fwd else max(0, k - 1000)
+    last, q = k, 0
+    while (k <= stop) if fwd else (k >= stop):
+        if live1[k]: last, q = k, 0
+        else:
+            q += 1
+            if q >= need: return last / 1000.0
+        k += step
+    return None
 def word_end(x):
-    t = x[2]; lim = x[2] + 1.0; q = 0
-    while t < lim:
-        if above(t): q = 0
-        else:
-            q += 1
-            if q >= 10: return t - 0.09
-        t += 0.01
-    return lim
+    t = _edge(x[2] - 0.05, True)               # start just inside the word: whisper often ends it early
+    return x[2] if t is None else t
 def word_start(x):
-    t = x[1]; lim = max(0, x[1] - 1.0); q = 0
-    while t > lim:
-        if above(t): q = 0
-        else:
-            q += 1
-            if q >= 10: return t + 0.09
-        t -= 0.01
-    return lim
+    t = _edge(x[1] + 0.05, False)
+    return x[1] if t is None else t
 cuts = [[a_, b_, "flub"] for a_, b_ in FL]
 for p, nx in zip(kw, kw[1:]):
     e = word_end(p); s = word_start(nx)
@@ -114,7 +140,11 @@ for ks, ke in K:
                 if not [x for x in words if t0 + 0.06 < x[1] < t1 - 0.06] and t0 > ks + 0.05 and t1 < ke - 0.05: extra.append([t0 + 0.05, t1 - 0.04, "breath"])
             run = 0
 K = keeps_from(cuts + extra)
-keeps = [[round(s * FPS), round(e * FPS)] for s, e in K]; keeps = [k for k in keeps if k[1] - k[0] >= 2]
+# Round OUTWARD, never to the nearest frame. With the cut landing 2ms after the word, nearest
+# rounding can pull the keep's end back up to half a frame (~21ms) and shave the consonant it
+# was placed to protect. A gap cut has >= GAP of quiet on both sides, so a frame of slack lands
+# in silence; only a hand-written flubs.json range can have speech that close.
+keeps = [[int(np.floor(s * FPS)), int(np.ceil(e * FPS))] for s, e in K]; keeps = [k for k in keeps if k[1] - k[0] >= 2]
 tot = sum(e - s for s, e in keeps) / FPS
 print(f"raw {DUR:.1f}s -> cut {tot:.1f}s, {len(keeps)} keeps ({len(extra)} breath cuts, {len(FL)} flub ranges)")
 json.dump({"keeps": keeps, "dur": DUR, "fps": FPS}, open(f"{W}/edl.json", "w"))

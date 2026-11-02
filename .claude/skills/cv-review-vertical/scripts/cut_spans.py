@@ -45,16 +45,33 @@ def keep_windows(total, cuts):
     return wins
 
 
+def src_fps(src):
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+                        "stream=r_frame_rate", "-of", "csv=p=0", src],
+                       capture_output=True, text=True).stdout.strip().strip(",")
+    num, den = (r.split("/") + ["1"])[:2]
+    return float(num) / float(den) if float(den) else 30.0
+
+
 def cut_video(src, dst, wins):
+    """Both streams are cut on the same frame-snapped times. trim keeps whole frames, so a
+    window asked for in plain seconds really runs (frame-rounded e) - (frame-rounded s), up to
+    a frame away from what the audio was handed; snapping first and deriving the audio from the
+    snapped times keeps them locked. The de-click fade is 6ms, not 20ms: 20ms of fade-out eats
+    20ms off the end of the kept speech, which is the opposite of a tight cut."""
     parts, v, a = [], [], []
+    fps = src_fps(src)
     for i, (s, e) in enumerate(wins):
-        d = e - s
+        f0, f1 = round(s * fps), round(e * fps)
+        vs, ve = (f0 - 0.25) / fps, (f1 - 0.25) / fps      # quarter-frame back: inside the frame, not on its edge
+        a0, a1 = f0 / fps, f1 / fps
+        d = a1 - a0
         if d <= 0.05:
             continue
-        f = min(0.02, d / 4)
-        parts.append(f"[0:v]trim=start={s:.3f}:end={e:.3f},setpts=PTS-STARTPTS[v{i}]")
-        parts.append(f"[0:a]atrim=start={s:.3f}:end={e:.3f},asetpts=PTS-STARTPTS,"
-                     f"afade=t=in:st=0:d={f:.3f},afade=t=out:st={d-f:.3f}:d={f:.3f}[a{i}]")
+        f = min(0.006, d / 4)
+        parts.append(f"[0:v]trim=start={vs:.6f}:end={ve:.6f},setpts=PTS-STARTPTS[v{i}]")
+        parts.append(f"[0:a]atrim=start={a0:.6f}:end={a1:.6f},asetpts=PTS-STARTPTS,"
+                     f"afade=t=in:st=0:d={f:.6f},afade=t=out:st={d-f:.6f}:d={f:.6f}[a{i}]")
         v.append(f"[v{i}]"); a.append(f"[a{i}]")
     parts.append("".join(x + y for x, y in zip(v, a)) +
                  f"concat=n={len(v)}:v=1:a=1[vo][ao]")

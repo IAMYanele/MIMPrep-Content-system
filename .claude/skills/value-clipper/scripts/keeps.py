@@ -1,18 +1,21 @@
 """Turn the words you KEEP into an assemble.py plan with measured cut edges.
 
 Pick the kept words by index from a chunk_words.py words.json, and this writes the plan:
-one exact block, and a removal for every gap between kept ranges. Each edge sits at the
-quietest point between the last kept word and the first removed one: a measured pause when
-there is one, else the deepest 10ms energy dip. The plan is marked "exact_edges", so
-assemble.py uses the edges as given (re-snapping a measured edge to the deepest dip within
-0.12s once moved a cut after "advice" into the "The" of the next line).
+one exact block, and a removal for every gap between kept ranges. Every edge is MEASURED on
+the audio at 1ms resolution: a removal starts "tail" seconds after the last kept word stops
+carrying sound and ends "tail" seconds before the next one starts, so the pause between them
+goes entirely rather than being split down the middle. Where the words run together with no
+dip to measure, it falls back to the pause midpoint or the quietest millisecond. The plan is
+marked "exact_edges", so assemble.py uses the edges as given (re-snapping a measured edge to
+the deepest dip within 0.12s once moved a cut after "advice" into the "The" of the next line).
 
 usage: python keeps.py <spec.json>
 spec:
   {"source": "F:/.../raw.mp4", "name": "GMAT - One mock exam a week",
    "words": "<job>/mocks_c",            # chunk_words.py output (words.json)
    "pauses": "<job>/mocks",             # pauses.json of the SAME source file, never another one
-   "tighten": 0.45, "out": "<job>/plan_mocks.json",
+   "tighten": 0.45, "tail": 0.002,      # seconds after a word stops that the cut lands
+   "out": "<job>/plan_mocks.json",
    "keep": [[2, 17], [29, 34], ...],    # inclusive word-index ranges, in order
    "first": 16.95, "last": 89.9,        # optional: hand-measured clip start / end
    "override": {"4": [50.33, null]}}    # optional: hand-measured edge for removal #4 (null = keep computed)
@@ -24,17 +27,33 @@ import json, os, sys
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from audio import Track
+from audio import Track, FRAME
 
 spec = json.load(open(sys.argv[1], encoding="utf-8"))
+TAIL = float(spec.get("tail", 0.002))        # how long after a word stops the cut lands
 W = json.load(open(Path(spec["words"]) / "words.json", encoding="utf-8"))
 P = json.load(open(Path(spec["pauses"]) / "pauses.json"))["pauses"]
 trk = Track(spec["source"])
 
 
-def boundary(p, q):
-    """Quietest point between word p and the next word q: (time, depth in dB; 99 = in a pause)."""
+def boundary(p, q, side=None):
+    """Cut point between word p and the next word q: (time, depth in dB; 99 = in a pause).
+
+    side="out" measures where word p actually STOPS and cuts TAIL ms after it; side="in"
+    measures where word q actually STARTS and cuts TAIL ms before it. That is the tight cut:
+    the pause between them is removed entirely instead of being split down the middle.
+    Falls back to the old behaviour -- pause midpoint, else the quietest millisecond -- when
+    the edge detector never finds quiet, which happens where the words run together with no
+    dip at all and there is nothing to measure."""
     a, b = sorted((W[p]["e"], W[q]["s"]))
+    if side == "out":
+        t, found = trk.word_end(a - 0.05, pad=TAIL)
+        if found:
+            return round(t, 3), round(trk.peak - trk.at(t), 1)
+    elif side == "in":
+        t, found = trk.word_start(b + 0.05, pad=TAIL)
+        if found:
+            return round(t, 3), round(trk.peak - trk.at(t), 1)
     a, b = a - 0.1, b + 0.1
     inside = [x for x in P if x[1] > a and x[0] < b]
     if inside:
@@ -42,16 +61,18 @@ def boundary(p, q):
         return x[2], 99.0
     k0, k1 = trk.idx(a), trk.idx(b)
     k = k0 + int(trk.db[k0:k1 + 1].argmin())
-    return round(trk.t0 + k * 0.01, 3), round(trk.peak - float(trk.db[k]), 1)
+    return round(trk.t0 + k * FRAME, 3), round(trk.peak - float(trk.db[k]), 1)
 
 
 keep = spec["keep"]
-first = boundary(keep[0][0] - 1, keep[0][0])[0] if keep[0][0] > 0 else W[0]["s"] - 0.3
-last = boundary(keep[-1][1], keep[-1][1] + 1)[0] if keep[-1][1] + 1 < len(W) else W[-1]["e"] + 0.3
+first = (boundary(keep[0][0] - 1, keep[0][0], "in")[0] if keep[0][0] > 0
+         else round(trk.word_start(W[0]["s"] + 0.05, pad=TAIL)[0], 3))
+last = (boundary(keep[-1][1], keep[-1][1] + 1, "out")[0] if keep[-1][1] + 1 < len(W)
+        else round(trk.word_end(W[-1]["e"] - 0.05, pad=TAIL)[0], 3))
 remove = []
 for (i0, j0), (i1, j1) in zip(keep, keep[1:]):
-    s, ds = boundary(j0, j0 + 1)
-    e, de = boundary(i1 - 1, i1)
+    s, ds = boundary(j0, j0 + 1, "out")
+    e, de = boundary(i1 - 1, i1, "in")
     remove.append([round(s, 3), round(e, 3)])
     gone = " ".join(w["w"] for w in W[j0 + 1:i1])
     warn = "   <- shallow edge, profile it" if min(ds, de) < 18 else ""
